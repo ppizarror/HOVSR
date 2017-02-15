@@ -1,0 +1,5 @@
+# Data files
+data/
+
+# Python compiled files
+*.pyc
