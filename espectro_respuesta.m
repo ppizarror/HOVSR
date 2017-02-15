@@ -3,9 +3,6 @@ function [Sd, Sv, Sa, T, b, TTT] = espectro_respuesta(vg, Fs, plot)
 % Fs: muestras por segundo de muestreo
 if ~exist('plot','var'), plot=true; end
 
-%% Se aplica corrección de linea base a la señal
-vg = detrend(vg);
-
 %% Crea arreglos de tiempo y razón de amortiguamiento
 dper = 0.01; % Delta de periodo
 T = 0.01:dper:10; % Vector de periodo

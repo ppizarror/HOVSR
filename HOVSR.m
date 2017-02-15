@@ -22,7 +22,7 @@ function varargout = HOVSR(varargin)
 
 % Edit the above text to modify the response to help HOVSR
 
-% Last Modified by GUIDE v2.5 15-Feb-2017 17:04:17
+% Last Modified by GUIDE v2.5 15-Feb-2017 17:43:57
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -75,23 +75,19 @@ varargout{1} = handles.output;
 
 
 % --- Executes on button press in boton_seleccionar_archivo.
-function boton_seleccionar_archivo_Callback(hObject, eventdata, handles)
+function boton_seleccionar_archivo_Callback(hObject, eventdata, handles) %#ok<*DEFNU>
 % hObject    handle to boton_seleccionar_archivo (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of boton_seleccionar_archivo
+start_process(handles);
 
-% Selecciona archivo
-[file, folder] = uigetfile({'*.txt', 'Archivo de aceleración (*.txt)'}, 'Seleccione un archivo');
-filenames = strsplit(file, '_');
-file_id = filenames{3}; % Indicador del archivo
-file_t = get_type_file(file);
+% --- Executes on button press in close_button.
+function close_button_Callback(hObject, eventdata, handles)
+% hObject    handle to close_button (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
-files = cell{3}; % Archivos necesarios, 1: NS, 2: EW, 3: Z
-
-% Se escanea la carpeta para buscar los demas archivos necesario
-folder_files = dir(folder);
-for f=1:length(folder_files)
-    folder_files(f).name
-end
+% Hint: get(hObject,'Value') returns toggle state of close_button
+close;
