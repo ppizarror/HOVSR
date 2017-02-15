@@ -84,7 +84,7 @@ function boton_seleccionar_archivo_Callback(hObject, eventdata, handles) %#ok<*D
 start_process(handles);
 
 % --- Executes on button press in close_button.
-function close_button_Callback(hObject, eventdata, handles)
+function close_button_Callback(hObject, eventdata, handles) %#ok<*INUSD>
 % hObject    handle to close_button (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)

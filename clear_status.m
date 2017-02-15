@@ -1,5 +1,5 @@
-function s = get_type_file(filename, id)
-% Returns file type (NS, EW, Z) for a same fileid
+function clear_status(handles)
+% This function clear status of app
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -17,27 +17,11 @@ function s = get_type_file(filename, id)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-try
-    w = strsplit(filename, '_');
-    fid = w{3};
-
-    % If file has same file id
-    if strcmp(fid, id)
-        for i=1:length(w)
-            if strcmp(w(i), 'N')
-                s=1;
-                return
-            elseif strcmp(w(i), 'E')
-                s=2;
-                return
-            elseif strcmp(w(i), 'Z')
-                s=3;
-                return
-            end
-        end
-    end
-catch
-end
-s = 0;
+axes(handles.plot_ns_v);
+cla reset;
+axes(handles.plot_ew_v);
+cla reset;
+axes(handles.plot_z_v);
+cla reset;
 
 end
