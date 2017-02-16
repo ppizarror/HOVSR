@@ -29,6 +29,7 @@ else
     clear_status(handles);
 end
 
+set(handles.root, 'pointer', 'watch');
 filenames = strsplit(file, '_');
 file_id = filenames{3}; % File id (name of the file)
 file_t = get_type_file(file, file_id);
@@ -49,7 +50,8 @@ end
 for k = 1:3
     % If a file is not loaded then function stops
     if isempty(files{k})
-        errordlg('Please check that N-S (_N), E-W (_E) y Z (_Z) files exist in the same folder.', 'Error');
+        disp_error(handles, 'Please check that N-S (_N), E-W (_E) y Z (_Z) files exist in the same folder.', ...
+            'Error');
         return
     end
 end
@@ -60,7 +62,7 @@ try
     data_ew = load(strcat(folder, files{2}));
     data_z = load(strcat(folder, files{3}));
 catch
-    errordlg('An error has occurred while loading the files.', 'Error');
+    disp_error(handles, 'An error has occurred while loading the files.', 'Error');
     return
 end
 
@@ -123,8 +125,11 @@ try
     lim2 = fft_region(2, 1);
     close(fig_obj);
 catch
-    clear_status(handles);
-    errordlg('If region is not selected process cant continue.', 'Error');
+    disp_error(handles, 'If region is not selected process cant continue.', 'Error');
+    return
+end
+if lim1==lim2
+    disp_error(handles, 'Region limits cant be the same.', 'Error');
     return
 end
 
@@ -142,45 +147,40 @@ plot([lim2 lim2], get(gca, 'ylim'), 'r--')
 %% Count elements between lim1 and lim2
 t_len = 0;
 for i=1:length(ns_t)
-    if ns_t(i)>=lim1
+    if lim2>=ns_t(i) && ns_t(i)>=lim1
         t_len = t_len + 1;
-    elseif ns_t(i)>lim2
-        break
     end
 end
 
 %% Create new arrays
-t_arr = zeros(t_len);
-new_ns_acc = zeros(t_len);
-new_ew_acc = zeros(t_len);
-new_z_acc = zeros(t_len);
+t_arr = ones(t_len);
+new_ns_acc = ones(t_len);
+new_ew_acc = ones(t_len);
+new_z_acc = ones(t_len);
 
 j = 1; % Index to store values
 cumtime = 0;
+dt = ns_t(2)-ns_t(1);
 for i=1:length(ns_t)
-    if ns_t(i)>=lim1
+    if lim2>=ns_t(i) && ns_t(i)>=lim1
         t_arr(j) = cumtime;
-        new_ns_acc(j) = ns_acc(j);
-        new_ew_acc(j) = ew_acc(j);
-        new_z_acc(j) = z_acc(j);
-        cumtime = cumtime + ns_t(i);
+        new_ns_acc(j) = ns_acc(i);
+        new_ew_acc(j) = ew_acc(i);
+        new_z_acc(j) = z_acc(i);
         j = j + 1;
-    elseif ns_t(i)>lim2
-        break
+        cumtime = cumtime + dt;
     end
 end
 
 %% FFT to new arrays
 try
-    fft_ns = fft(new_ns_acc);
-    fft_ew = fft(new_ew_acc);
-    fft_z = fft(new_z_acc);
+    fft_ns = real(fft(new_ns_acc));
+    fft_ew = real(fft(new_ew_acc));
+    fft_z = real(fft(new_z_acc));
 catch
-    clear_status(handles);
-    errordlg('An error has occured while calculating FFT.', 'Fatal error');
+    disp_error(handles, 'An error has occured while calculating FFT.', 'Fatal error');
     return
 end
-
 
 %% Plot FFT plots
 axes(handles.plot_fft_ns);
@@ -196,4 +196,9 @@ plot(t_arr, fft_z, 'k');
 hold on;
 grid on;
 
+%% Select half of data
+
+
+%% Finishes process
+set(handles.root, 'pointer', 'arrow');
 end
