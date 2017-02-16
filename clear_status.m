@@ -17,11 +17,21 @@ function clear_status(handles)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+% Reset graphs
 axes(handles.plot_ns_v);
 cla reset;
 axes(handles.plot_ew_v);
 cla reset;
 axes(handles.plot_z_v);
 cla reset;
+axes(handles.plot_fft_ns);
+cla reset;
+axes(handles.plot_fft_ew);
+cla reset;
+axes(handles.plot_fft_z);
+cla reset;
+
+% Delete data
+clearvars -except handles;
 
 end

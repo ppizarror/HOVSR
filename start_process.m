@@ -20,11 +20,15 @@ function start_process(handles)
 %% Library import
 constants;
 
-%% Clear previous status
-clear_status(handles);
-
 %% Select file
 [file, folder] = uigetfile({'*.txt', 'Acceleration file (*.txt)'}, 'Please select a file');
+if file==0
+    return
+else
+    % Clear previous status
+    clear_status(handles);
+end
+
 filenames = strsplit(file, '_');
 file_id = filenames{3}; % File id (name of the file)
 file_t = get_type_file(file, file_id);
@@ -134,5 +138,62 @@ plot([lim2 lim2], get(gca, 'ylim'), 'r--')
 axes(handles.plot_z_v);
 plot([lim1 lim1], get(gca, 'ylim'), 'r--')
 plot([lim2 lim2], get(gca, 'ylim'), 'r--')
+
+%% Count elements between lim1 and lim2
+t_len = 0;
+for i=1:length(ns_t)
+    if ns_t(i)>=lim1
+        t_len = t_len + 1;
+    elseif ns_t(i)>lim2
+        break
+    end
 end
 
+%% Create new arrays
+t_arr = zeros(t_len);
+new_ns_acc = zeros(t_len);
+new_ew_acc = zeros(t_len);
+new_z_acc = zeros(t_len);
+
+j = 1; % Index to store values
+cumtime = 0;
+for i=1:length(ns_t)
+    if ns_t(i)>=lim1
+        t_arr(j) = cumtime;
+        new_ns_acc(j) = ns_acc(j);
+        new_ew_acc(j) = ew_acc(j);
+        new_z_acc(j) = z_acc(j);
+        cumtime = cumtime + ns_t(i);
+        j = j + 1;
+    elseif ns_t(i)>lim2
+        break
+    end
+end
+
+%% FFT to new arrays
+try
+    fft_ns = fft(new_ns_acc);
+    fft_ew = fft(new_ew_acc);
+    fft_z = fft(new_z_acc);
+catch
+    clear_status(handles);
+    errordlg('An error has occured while calculating FFT.', 'Fatal error');
+    return
+end
+
+
+%% Plot FFT plots
+axes(handles.plot_fft_ns);
+plot(t_arr, fft_ns, 'k');
+hold on;
+grid on;
+axes(handles.plot_fft_ew);
+plot(t_arr, fft_ew, 'k');
+hold on;
+grid on;
+axes(handles.plot_fft_z);
+plot(t_arr, fft_z, 'k');
+hold on;
+grid on;
+
+end
