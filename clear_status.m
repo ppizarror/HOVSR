@@ -1,5 +1,5 @@
 function clear_status(handles)
-% This function clear status of app
+% This function clear status of app.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %

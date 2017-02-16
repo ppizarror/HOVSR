@@ -90,4 +90,5 @@ function close_button_Callback(hObject, eventdata, handles) %#ok<*INUSD>
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of close_button
+clear_status(handles);
 close;

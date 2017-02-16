@@ -1,5 +1,5 @@
 function s = get_type_file(filename, id)
-% Returns file type (NS, EW, Z) for a same fileid
+% Returns file type (NS, EW, Z) for a same fileid.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %

@@ -1,5 +1,5 @@
 function start_process(handles)
-% This function starts calculation process
+% This function starts calculation process.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -112,7 +112,8 @@ xlim([0 max(z_t)]);
 grid on;
 
 %% Pick FFT region
-fig_obj = figure('Name', 'Pick a region to start FFT calculation', 'NumberTitle', 'off'); %#ok<*NASGU> % #ok<*NASGU>
+fig_obj = figure('Name', 'Pick a region to start FFT calculation', ...
+    'NumberTitle', 'off');
 plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
 xlim([0 max(ns_t)]);
 xlabel('Time (s)');
@@ -197,7 +198,6 @@ hold on;
 grid on;
 
 %% Select half of data
-
 
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');
