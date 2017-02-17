@@ -56,6 +56,9 @@ function HOVSR_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 movegui(gcf, 'center');
 
+% Clear status
+clear_status(handles);
+
 % Update handles structure
 guidata(hObject, handles);
 

@@ -1,5 +1,4 @@
-function clear_status(handles)
-% This function clear status of app.
+%% App configuration
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -17,34 +16,14 @@ function clear_status(handles)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-% Reset graphs
-axes(handles.plot_ns_v);
-cla reset;
-yaxis_linspace(5);
-set(gca,'fontsize', 10);
-grid on;
-axes(handles.plot_ew_v);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_z_v);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_ns);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_ew);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_z);
-cla reset;
-yaxis_linspace(5);
-grid on;
+%% Pick mode
+% Mode 1: User picks 2 points to delimitate a region
+% Mode 2: SECOND_RANGE seconds range
+PICK_MODE = 2;
+SECOND_RANGE = 30;
 
-% Delete data
-clearvars -except handles;
-
-end
+%% Plot configuration
+STYLE_FFT_PLOT = 'k';
+STYLE_HALF_PLOT_FFT = 'r--';
+STYLE_HALF_PLOT_TUCKEY = 'r--';
+STYLE_TUCKEY_PLOT = 'k';

@@ -1,5 +1,5 @@
-function clear_status(handles)
-% This function clear status of app.
+function yaxis_linspace(nticks)
+% This function sets yticks as linspace of nticks total points.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -17,34 +17,7 @@ function clear_status(handles)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-% Reset graphs
-axes(handles.plot_ns_v);
-cla reset;
-yaxis_linspace(5);
-set(gca,'fontsize', 10);
-grid on;
-axes(handles.plot_ew_v);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_z_v);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_ns);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_ew);
-cla reset;
-yaxis_linspace(5);
-grid on;
-axes(handles.plot_fft_z);
-cla reset;
-yaxis_linspace(5);
-grid on;
-
-% Delete data
-clearvars -except handles;
+lims = get(gca, 'ylim');
+yticks(linspace(lims(1), lims(2), nticks));
 
 end

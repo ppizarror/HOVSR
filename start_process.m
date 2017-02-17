@@ -18,6 +18,7 @@ function start_process(handles)
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 %% Library import
+config;
 constants;
 
 %% Select file
@@ -96,54 +97,84 @@ z_acc_v = ven_z .* z_acc;
 
 %% Smoothing tuckey is plotted
 axes(handles.plot_ns_v);
-plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
+plot(ns_t, ns_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
 hold on;
 xlim([0 max(ns_t)]);
+yaxis_linspace(5);
+xaxis_linspace(6);
 grid on;
 axes(handles.plot_ew_v);
-plot(ew_t, ew_acc_v ./ G_VALUE, 'k');
+plot(ew_t, ew_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
 hold on;
 xlim([0 max(ew_t)]);
+yaxis_linspace(5);
+xaxis_linspace(6);
 grid on;
 axes(handles.plot_z_v);
-plot(z_t, z_acc_v ./ G_VALUE, 'k');
+plot(z_t, z_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
 hold on;
 xlim([0 max(z_t)]);
+yaxis_linspace(5);
+xaxis_linspace(6);
 grid on;
 
 %% Pick FFT region
-fig_obj = figure('Name', 'Pick a region to start FFT calculation', ...
-    'NumberTitle', 'off');
-plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
-xlim([0 max(ns_t)]);
-xlabel('Time (s)');
-ylabel('Acceleration (g)');
-grid on;
-movegui(fig_obj, 'center');
-try
-    fft_region = ginput(2);
-    lim1 = fft_region(1, 1);
-    lim2 = fft_region(2, 1);
-    close(fig_obj);
-catch
-    disp_error(handles, 'If region is not selected process cant continue.', 'Error');
-    return
-end
-if lim1==lim2
-    disp_error(handles, 'Region limits cant be the same.', 'Error');
-    return
+switch PICK_MODE
+    case 1    
+        fig_obj = figure('Name', 'Pick a region to start FFT calculation', ...
+            'NumberTitle', 'off');
+        plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
+        xlim([0 max(ns_t)]);
+        xlabel('Time (s)');
+        ylabel('Acceleration (g)');
+        grid on;
+        movegui(fig_obj, 'center');
+        try
+            fft_region = ginput(2);
+            lim1 = fft_region(1, 1);
+            lim2 = fft_region(2, 1);
+            close(fig_obj);
+        catch
+            disp_error(handles, 'If region is not selected process cant continue.', 'Error');
+            return
+        end
+        if lim1==lim2
+            disp_error(handles, 'Region limits cant be the same.', 'Error');
+            return
+        end
+    case 2
+        fig_obj = figure('Name', 'Pick a point to select 30 seconds range', ...
+            'NumberTitle', 'off');
+        plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
+        xlim([0 max(ns_t)]);
+        xlabel('Time (s)');
+        ylabel('Acceleration (g)');
+        grid on;
+        movegui(fig_obj, 'center');
+        try
+            lim1 = ginput(1);
+            lim1(1)
+            max(ns_t)
+            close(fig_obj);
+        catch
+            disp_error(handles, 'If region is not selected process cant continue.', 'Error');
+            return
+        end
+    otherwise
+        disp_error(handles, 'Invalid pick mode, PICK_MODE must be 1 or 2.', 'Configuration error');
+        return
 end
 
 %% Draw selected region on Tuckey plots
 axes(handles.plot_ns_v);
-plot([lim1 lim1], get(gca, 'ylim'), 'r--')
-plot([lim2 lim2], get(gca, 'ylim'), 'r--')
+draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
+draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
 axes(handles.plot_ew_v);
-plot([lim1 lim1], get(gca, 'ylim'), 'r--')
-plot([lim2 lim2], get(gca, 'ylim'), 'r--')
+draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
+draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
 axes(handles.plot_z_v);
-plot([lim1 lim1], get(gca, 'ylim'), 'r--')
-plot([lim2 lim2], get(gca, 'ylim'), 'r--')
+draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
+draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
 
 %% Count elements between lim1 and lim2
 t_len = 0;
@@ -154,10 +185,10 @@ for i=1:length(ns_t)
 end
 
 %% Create new arrays
-t_arr = ones(t_len);
-new_ns_acc = ones(t_len);
-new_ew_acc = ones(t_len);
-new_z_acc = ones(t_len);
+t_arr = zeros(t_len, 1);
+new_ns_acc = zeros(t_len, 1);
+new_ew_acc = zeros(t_len, 1);
+new_z_acc = zeros(t_len, 1);
 
 j = 1; % Index to store values
 cumtime = 0;
@@ -183,21 +214,35 @@ catch
     return
 end
 
-%% Plot FFT plots
+%% Select half of data
+t_len_h = floor(t_len/2);
+t_arr_h = t_arr(1: t_len_h);
+fft_ns_h = fft_ns(1: t_len_h);
+fft_ew_h = fft_ew(1: t_len_h);
+fft_z_h = fft_z(1: t_len_h);
+
+%% Plot FFT
 axes(handles.plot_fft_ns);
-plot(t_arr, fft_ns, 'k');
+plot(t_arr_h, fft_ns_h, STYLE_FFT_PLOT);
+xlim([0 max(t_arr_h)]);
+xaxis_linspace(7);
+yaxis_linspace(5);
 hold on;
 grid on;
 axes(handles.plot_fft_ew);
-plot(t_arr, fft_ew, 'k');
+plot(t_arr_h, fft_ew_h, STYLE_FFT_PLOT);
+xlim([0 max(t_arr_h)]);
+xaxis_linspace(7);
+yaxis_linspace(5);
 hold on;
 grid on;
 axes(handles.plot_fft_z);
-plot(t_arr, fft_z, 'k');
+plot(t_arr_h, fft_z_h, STYLE_FFT_PLOT);
+xlim([0 max(t_arr_h)]);
+xaxis_linspace(7);
+yaxis_linspace(5);
 hold on;
 grid on;
-
-%% Select half of data
 
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');

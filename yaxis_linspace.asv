@@ -1,0 +1,7 @@
+function [ output_args ] = yaxis_linspace()
+%YAXIS_LINSPACE Summary of this function goes here
+%   Detailed explanation goes here
+
+
+end
+
