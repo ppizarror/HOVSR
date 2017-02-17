@@ -157,8 +157,7 @@ switch PICK_MODE
             lim1 = lim1(1);
             close(fig_obj);
             if lim1(1)+SECOND_RANGE >max_time
-                disp_error(handles, sprintf('Selected point exceeds maximum (%.01fs)', ...
-                    max_time-SECOND_RANGE), 'Interval error');
+                disp_error(handles, sprintf('Selected point exceeds maximum (%.01fs)',max_time-SECOND_RANGE), 'Interval error');
                 return
             else
                 lim2 = lim1 + SECOND_RANGE;
