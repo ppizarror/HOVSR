@@ -3,3 +3,6 @@ data/
 
 # Python compiled files
 *.pyc
+
+# Old folder files
+.old/
