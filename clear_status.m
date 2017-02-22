@@ -47,4 +47,6 @@ grid on;
 % Delete data
 clearvars -except handles;
 
+% Closes generated figures
+
 end

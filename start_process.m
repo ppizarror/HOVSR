@@ -76,15 +76,25 @@ ns_t = data_ns(:, 1);
 ew_t = data_ew(:, 1);
 z_t = data_z(:, 1);
 
+%% Checks that all files have the same size of elements
+if length(ns_acc)~=length(ew_acc) && length(ew_acc)~=length(z_acc)
+    disp_error(handles, 'Data must have the same size of elements.', 'Data Error');
+    return
+end
+
+%% Calculate frecuency and dt
+dt = ns_t(2)-ns_t(1);
+f = 1/dt; % Sampling rate
+
 %% Data width
 ns_acc_len = length(ns_acc);
 ew_acc_len = length(ew_acc);
 z_acc_len = length(z_acc);
 
 %% Baseline correction
-ns_acc = detrend(ns_acc);
-ew_acc = detrend(ew_acc);
-z_acc = detrend(z_acc);
+ns_acc = detrend(ns_acc, 0);
+ew_acc = detrend(ew_acc, 0);
+z_acc = detrend(z_acc, 0);
 
 %% Smoothing tuckey
 ven_ns = tukeywin(ns_acc_len, 0.05);
@@ -95,23 +105,23 @@ ns_acc_v = ven_ns .* ns_acc;
 ew_acc_v = ven_ew .* ew_acc;
 z_acc_v = ven_z .* z_acc;
 
-%% Smoothing tuckey is plotted
+%% Acceleration data is plotted
 axes(handles.plot_ns_v);
-plot(ns_t, ns_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
+plot(ns_t, ns_acc_v, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(ns_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 axes(handles.plot_ew_v);
-plot(ew_t, ew_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
+plot(ew_t, ew_acc_v, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(ew_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 axes(handles.plot_z_v);
-plot(z_t, z_acc_v ./ G_VALUE, STYLE_TUCKEY_PLOT);
+plot(z_t, z_acc_v, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(z_t)]);
 yaxis_linspace(5);
@@ -167,6 +177,8 @@ switch PICK_MODE
             disp_error(handles, 'If region is not selected process cant continue.', 'Error');
             return
         end
+    case 3
+        
     otherwise
         disp_error(handles, 'Invalid pick mode, PICK_MODE must be 1 or 2.', 'Configuration error');
         return
@@ -192,62 +204,132 @@ for i=1:length(ns_t)
 end
 
 %% Create new arrays
-t_arr = zeros(t_len, 1);
 new_ns_acc = zeros(t_len, 1);
 new_ew_acc = zeros(t_len, 1);
 new_z_acc = zeros(t_len, 1);
 
 j = 1; % Index to store values
-cumtime = 0;
-dt = ns_t(2)-ns_t(1);
 for i=1:length(ns_t)
     if lim2>=ns_t(i) && ns_t(i)>=lim1
-        t_arr(j) = cumtime;
         new_ns_acc(j) = ns_acc(i);
         new_ew_acc(j) = ew_acc(i);
         new_z_acc(j) = z_acc(i);
         j = j + 1;
-        cumtime = cumtime + dt;
     end
 end
 
 %% FFT to new arrays
 try
-    fft_ns = real(fft(new_ns_acc));
-    fft_ew = real(fft(new_ew_acc));
-    fft_z = real(fft(new_z_acc));
+    fft_ns = fft(new_ns_acc);
+    fft_ew = fft(new_ew_acc);
+    fft_z = fft(new_z_acc);
 catch
     disp_error(handles, 'An error has occured while calculating FFT.', 'Fatal error');
     return
 end
 
+% Absolute value
+% fft_ns = abs(fft_ns./f);
+% fft_ew = abs(fft_ew./f);
+% fft_z = abs(fft_z./f);
+
+% Create frecuency array
+N = length(fft_ns);
+freq_arr = 0 : f/N: f - 1 / N;
+
 %% Select half of data
 t_len_h = floor(t_len/2);
-t_arr_h = t_arr(1: t_len_h);
+f = freq_arr(1: t_len_h);
 fft_ns_h = fft_ns(1: t_len_h);
 fft_ew_h = fft_ew(1: t_len_h);
 fft_z_h = fft_z(1: t_len_h);
 
+% Re^2 + Im^2
+fft_ns_h = modlim(fft_ns_h);
+fft_ew_h = modlim(fft_ew_h);
+fft_z_h = modlim(fft_z_h);
+
 %% Plot FFT
 axes(handles.plot_fft_ns);
-plot(t_arr_h, fft_ns_h, STYLE_FFT_PLOT);
+plot(f, fft_ns_h, STYLE_FFT_PLOT);
 xaxis_linspace(7);
 yaxis_linspace(5);
 hold on;
 grid on;
 axes(handles.plot_fft_ew);
-plot(t_arr_h, fft_ew_h, STYLE_FFT_PLOT);
+plot(f, fft_ew_h, STYLE_FFT_PLOT);
 xaxis_linspace(7);
 yaxis_linspace(5);
 hold on;
 grid on;
 axes(handles.plot_fft_z);
-plot(t_arr_h, fft_z_h, STYLE_FFT_PLOT);
+plot(f, fft_z_h, STYLE_FFT_PLOT);
 xaxis_linspace(7);
 yaxis_linspace(5);
 hold on;
 grid on;
 
+%% Konno - Ohmachi smoothing
+fc = f(floor(t_len_h/2));
+kn = konno_ohmachi(f, fc, 30);
+sh1 = fft_ns_h.*kn;
+sh2 = fft_ew_h.*kn;
+sv = fft_z_h.*kn;
+
+%% Nakamura method
+sh = sqrt((sh1.^2 + sh2.^2)/2);
+sh_sv = sh./abs(sv);
+
+figure(10);
+hold off;
+semilogx(f, sh_sv);
+title('Nakamura + Konno-Ohmachi');
+figure(11)
+semilogx(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
+title('Arai & Tokimatsu'); % http://repobib.ubiobio.cl/jspui/bitstream/123456789/150/4/Saldivia%20P.,%20Juan%20C..pdf
+figure(12)
+fft_ns_h2 = fft_ns_h - mean(fft_ns_h);
+fft_ew_h2 = fft_ew_h - mean(fft_ew_h);
+fft_z_h2 = fft_z_h - mean(fft_z_h);
+plot(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
+title('Nakamura no smooth');
+
+figure(13);
+semilogx(f, sh_sv);
+hold on;
+semilogx(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
+semilogx(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
+title('Combinations');
+legend('Nakamura + Konno', 'Arai - Tokimasu', 'Nakamura no smooth');
+xlim([0 10]);
+
+figure(14);
+plot(f, sh_sv);
+hold on;
+plot(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
+plot(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
+title('Combinations - nolog');
+legend('Nakamura + Konno', 'Arai - Tokimasu', 'Nakamura no smooth');
+xlim([0 2]);
+
+figure(15);
+valknom = (sqrt((fft_ns_h.^2 + fft_ew_h.^2)./2)./fft_z_h);
+semilogx(f, valknom);
+xlim([0 10]);
+
+vmax = 0;
+u = 0;
+for i=1:length(f)
+    if valknom(i) > vmax
+        vmax = valknom(i);
+        u = i;
+    end
+    if f(i) > 10
+        break
+    end
+end
+fprintf('f maxima: %.3f', f(u));
+    
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');
 end

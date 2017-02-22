@@ -19,11 +19,12 @@
 %% Pick mode
 % Mode 1: User picks 2 points to delimitate a region
 % Mode 2: SECOND_RANGE seconds range
-PICK_MODE = 2;
+% Mode 3: User selects a region to create several windows of <t> time
+PICK_MODE = 1;
 SECOND_RANGE = 30;
 
 %% Plot configuration
 STYLE_FFT_PLOT = 'k';
 STYLE_HALF_PLOT_FFT = 'r--';
 STYLE_HALF_PLOT_TUCKEY = 'r--';
-STYLE_TUCKEY_PLOT = 'k';
+STYLE_ACCELERATION_PLOT = 'k';

@@ -1,4 +1,5 @@
-%% Constants used by app
+function ff = konno_ohmachi(f, fc, b)
+% Konno and Ohmachi (1998) [1] smoothing.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -15,7 +16,20 @@
 % You should have received a copy of the GNU General Public License
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+%
+% [1]: Konno, K. and Omachi, T., 1998, Bull. Seism. Soc. Am., 88, 228-241.
 
-STYLE_TUCKEY_PLOTS = 'k';
-STYLE_HALF_PLOT = 'r--';
-G_VALUE = 980; % g, cm/s^2
+log10f_b = log10(f./fc).*b;
+ff = (sin(log10f_b)./(log10f_b)).^4;
+
+% Remove NaN
+for i=1:length(ff)
+    if isnan(ff(i))
+        ff(i) = 0;
+    end
+end
+
+% Normalize
+ff = ff./sum(ff);
+
+end

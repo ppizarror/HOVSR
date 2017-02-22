@@ -1,6 +1,0 @@
-function [ output_args ] = xaxis_linspace( input_args )
-%XAXIS_LINSPACE Summary of this function goes here
-%   Detailed explanation goes here
-
-
-end
