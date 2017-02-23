@@ -186,13 +186,9 @@ t_len_h = floor(t_len/2);
 % Create tuckey (5%)
 tuckey = tukeywin(t_len, 0.05);
 
-%% Create frecuency array & Konno-Ohmachi window
+%% Create frecuency array
 freq_arr = 0 : f/t_len: f - 1 / t_len;
 freq_h = freq_arr(1: t_len_h); % Half of frequency
-
-% Konno aplied to half of frequency
-% fc = freq_arr(floor(length(freq_h)/2) + 1);
-% konno = konno_ohmachi(freq_h, fc, 30)'; %#ok<*NASGU>
 
 %% Calculate total iterations
 totalitr = 1;
@@ -289,30 +285,13 @@ for itr=1:totalitr
     fft_ew = ew_fft_itr(1: t_len_h);
     fft_z = z_fft_itr(1: t_len_h);
     
-    % fft_ns = konno_ohmachi(fft_ns, freq_h, 30, false);
-    % fft_ew = konno_ohmachi(fft_ew, freq_h, 30, false);
-    % fft_z = konno_ohmachi(fft_z, freq_h, 30, false);  
-    % fft_ns = real(fft_ns);
-    % fft_nw = real(fft_ew);
-    % fft_z = real(fft_z);
-    
-    % Apply absolute value & konno
-    % fft_ns = abs(fft_ns).*konno;
-    % fft_ew = abs(fft_ew).*konno;
-    % fft_z = abs(fft_z).*konno;
-    
-    % Apply loess smooth matlab
-    % fft_ns = smooth(freq_h, abs(fft_ns), SMOOTH_SPAN, SMOOTH_TYPE);
-    % fft_ew = smooth(freq_h, abs(fft_ew), SMOOTH_SPAN, SMOOTH_TYPE);
-    % fft_z = smooth(freq_h, abs(fft_z), SMOOTH_SPAN, SMOOTH_TYPE);
-    
-    % fft_ns = smooth(abs(fft_ns));
-    % fft_ew = smooth(abs(fft_ew));
-    % fft_z = smooth(abs(fft_z));
-    
-    fft_ns = abs(smooth(fft_ns));
-    fft_ew = abs(smooth(fft_ew));
-    fft_z = abs(smooth(fft_z));
+    % Apply smooth
+    try
+        fft_ns = smooth_spectra(fft_ns, freq_h, 2);
+        fft_ew = smooth_spectra(fft_ew, freq_h, 2);
+        fft_z = smooth_spectra(fft_z, freq_h, 2);
+    catch
+    end
     
     % Calculate SH
     sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);

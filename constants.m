@@ -1,4 +1,4 @@
-%% Constants used by app
+% CONSTANTS
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -26,8 +26,4 @@ WINDOW_SIZE = 30;
 % SH/SV CONSTANTS
 MIN_F_SHSV = 0.01;
 MAX_F_SHSV = 10;
-
-% SMOOTH TYPE
-SMOOTH_SPAN = 0.1;
-SMOOTH_TYPE = 'loess';
 

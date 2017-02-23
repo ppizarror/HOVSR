@@ -20,7 +20,7 @@ function langlist = load_lang(langid)
 
 %% Constants
 LANG_AVAIABLE_LANGUAGES = 2; % Español, English
-LANG_ENTRIES = 60; % Total language entries on cell structure
+LANG_ENTRIES = 70; % Total language entries on cell structure
 
 %% Check if langid is valid
 if ~ (1 <= langid && langid <= LANG_AVAIABLE_LANGUAGES)
