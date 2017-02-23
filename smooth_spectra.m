@@ -38,7 +38,7 @@ switch stype
     % Konno-Ohmachi - no abs
     case 1   
         fc = freq(floor(length(freq)/2) + 1); % Central frequency
-        konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH)';
+        konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, false)';
         new_spectrum = spectrum .* konno;
         
     % Konno-Ohmachi + abs
@@ -52,13 +52,13 @@ switch stype
         
      % Konno-Ohmachi - no abs + normalize
     case 3  
-        fc = freq(floor(length(freq)/2) + 1); % Central frequency
+        fc = freq(floor(length(freq)/2) + 1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
         new_spectrum = spectrum .* konno;
         
     % Konno-Ohmachi + abs + normalize
     case 4     
-        fc = freq(floor(length(freq)/2) + 1); % Central frequency
+        fc = freq(floor(length(freq)/2) + 1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
         new_spectrum = spectrum .* konno;
         
@@ -74,8 +74,7 @@ switch stype
         new_spectrum = smooth(freq, abs(spectrum), SMOOTH_SPAN, SMOOTH_TYPE);
 
     otherwise
-        error('Smoothing type does not exist.')
-    
+        error('Smoothing type does not exist.');
 end
 
 end

@@ -214,6 +214,37 @@ list{59, 2} = 'Operación cancelada.';
 list{60, 1} = 'You must choose 3 files.';
 list{60, 2} = 'Debes elegir 3 archivos.';
 
+list{61, 1} = 'An error has occurred while smoothing the spectrum.';
+list{61, 2} = 'Ocurrió un error mientras se suavizaba el espectro.';
+
+list{62, 1} = '';
+list{62, 2} = '';
+
+list{63, 1} = '';
+list{63, 2} = '';
+
+list{64, 1} = '';
+list{64, 2} = '';
+
+list{65, 1} = '';
+list{65, 2} = '';
+
+list{66, 1} = '';
+list{66, 2} = '';
+
+list{67, 1} = '';
+list{67, 2} = '';
+
+list{68, 1} = '';
+list{68, 2} = '';
+
+list{69, 1} = '';
+list{69, 2} = '';
+
+list{70, 1} = '';
+list{70, 2} = '';
+
+
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);
 for j = 1:LANG_ENTRIES

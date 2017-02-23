@@ -291,6 +291,8 @@ for itr=1:totalitr
         fft_ew = smooth_spectra(fft_ew, freq_h, 2);
         fft_z = smooth_spectra(fft_z, freq_h, 2);
     catch
+        disp_error(handles, 61, 11, lang);
+        return
     end
     
     % Calculate SH
