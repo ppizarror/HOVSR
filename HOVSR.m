@@ -56,8 +56,25 @@ function HOVSR_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 movegui(gcf, 'center');
 
+% Load configs
+config;
+
+% Load language
+lang = load_lang(LANGUAGE);
+setappdata(handles.root, 'lang', lang);
+
+% Set app strings
+set(handles.boton_seleccionar_archivo, 'String', lang{1});
+set(handles.close_button, 'String', lang{2});
+set(handles.panel_acceleration_plots, 'Title', lang{3});
+set(handles.panel_averagesv, 'Title', lang{4});
+set(handles.panel_iteraciones, 'Title', lang{5});
+
+% Figures id's
+setappdata(handles.root, 'figureid1', 1);
+
 % Clear status
-clear_status(handles);
+clear_status(handles, lang);
 
 % Update handles structure
 guidata(hObject, handles);
@@ -84,7 +101,7 @@ function boton_seleccionar_archivo_Callback(hObject, eventdata, handles) %#ok<*D
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of boton_seleccionar_archivo
-start_process(handles);
+start_process(handles, getappdata(handles.root, 'lang'));
 
 % --- Executes on button press in close_button.
 function close_button_Callback(hObject, eventdata, handles) %#ok<*INUSD>
@@ -93,5 +110,5 @@ function close_button_Callback(hObject, eventdata, handles) %#ok<*INUSD>
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of close_button
-clear_status(handles);
+clear_status(handles, getappdata(handles.root, 'lang'));
 close;

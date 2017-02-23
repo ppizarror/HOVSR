@@ -16,15 +16,21 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-%% Pick mode
-% Mode 1: User picks 2 points to delimitate a region
-% Mode 2: SECOND_RANGE seconds range
-% Mode 3: User selects a region to create several windows of <t> time
-PICK_MODE = 1;
-SECOND_RANGE = 30;
+%% App config
+LANGUAGE = 1; % 1: English, 2: Spanish
 
 %% Plot configuration
-STYLE_FFT_PLOT = 'k';
-STYLE_HALF_PLOT_FFT = 'r--';
-STYLE_HALF_PLOT_TUCKEY = 'r--';
-STYLE_TUCKEY_PLOT = 'k';
+SHOW_MAX_F_ON_AVERAGE_SHSV = true; % Show maximum f on AVERAGE_SHSV
+SHOW_REGION_ON_ACCELERATION = true;
+STYLE_ACCELERATION_PLOT = 'k';
+STYLE_AVERAGE_SHSV = 'k';
+STYLE_MAX_F = 'k-';
+STYLE_MAX_F_ON_AVERAGE = 'r--';
+STYLE_MAX_SHSV = 'k-';
+STYLE_REGION_ACCEL = 'k--';
+STYLE_SHSV_F = 'k-';
+STYLE_SHSV_MAXF = 'r--';
+
+%% Iteration results
+SHOW_ITR_DIALOG = true; % Show info dialog after iteration finishes
+SHOW_ITR_MAXSHSV = true; % Show result plot after iteration finishes

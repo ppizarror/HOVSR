@@ -1,4 +1,4 @@
-function start_process(handles)
+function start_process(handles, lang)
 % This function starts calculation process.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -22,17 +22,17 @@ config;
 constants;
 
 %% Select file
-[file, folder] = uigetfile({'*.txt', 'Acceleration file (*.txt)'}, 'Please select a file');
+[file, folder] = uigetfile({'*.txt', lang{8}}, lang{9});
 if file==0
     return
 else
     % Clear previous status
-    clear_status(handles);
+    clear_status(handles, lang);
 end
 
 set(handles.root, 'pointer', 'watch');
 filenames = strsplit(file, '_');
-file_id = filenames{3}; % File id (name of the file)
+file_id = filenames{FILE_ID_POS}; % File id (name of the file)
 file_t = get_type_file(file, file_id);
 
 files = cell(3, 1); % Necessary files, 1: NS, 2: EW, 3: Z
@@ -51,8 +51,7 @@ end
 for k = 1:3
     % If a file is not loaded then function stops
     if isempty(files{k})
-        disp_error(handles, 'Please check that N-S (_N), E-W (_E) y Z (_Z) files exist in the same folder.', ...
-            'Error');
+        disp_error(handles, 10, 15, lang);
         return
     end
 end
@@ -63,7 +62,7 @@ try
     data_ew = load(strcat(folder, files{2}));
     data_z = load(strcat(folder, files{3}));
 catch
-    disp_error(handles, 'An error has occurred while loading the files.', 'Error');
+    disp_error(handles, 12, 15, lang);
     return
 end
 
@@ -78,7 +77,7 @@ z_t = data_z(:, 1);
 
 %% Checks that all files have the same size of elements
 if length(ns_acc)~=length(ew_acc) && length(ew_acc)~=length(z_acc)
-    disp_error(handles, 'Data must have the same size of elements.', 'Data Error');
+    disp_error(handles, 13, 14, lang);
     return
 end
 
@@ -86,250 +85,277 @@ end
 dt = ns_t(2)-ns_t(1);
 f = 1/dt; % Sampling rate
 
-%% Data width
-ns_acc_len = length(ns_acc);
-ew_acc_len = length(ew_acc);
-z_acc_len = length(z_acc);
-
 %% Baseline correction
 ns_acc = detrend(ns_acc, 0);
 ew_acc = detrend(ew_acc, 0);
 z_acc = detrend(z_acc, 0);
 
-%% Smoothing tuckey
-ven_ns = tukeywin(ns_acc_len, 0.05);
-ven_ew = tukeywin(ew_acc_len, 0.05);
-ven_z = tukeywin(z_acc_len, 0.05);
-
-ns_acc_v = ven_ns .* ns_acc;
-ew_acc_v = ven_ew .* ew_acc;
-z_acc_v = ven_z .* z_acc;
-
 %% Acceleration data is plotted
-axes(handles.plot_ns_v);
-plot(ns_t, ns_acc_v, STYLE_ACCELERATION_PLOT);
+axes(handles.plot_ns);
+plot(ns_t, ns_acc, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(ns_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
-axes(handles.plot_ew_v);
-plot(ew_t, ew_acc_v, STYLE_ACCELERATION_PLOT);
+axes(handles.plot_ew);
+plot(ew_t, ew_acc, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(ew_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
-axes(handles.plot_z_v);
-plot(z_t, z_acc_v, STYLE_ACCELERATION_PLOT);
+axes(handles.plot_z);
+plot(z_t, z_acc, STYLE_ACCELERATION_PLOT);
 hold on;
 xlim([0 max(z_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 
-%% Pick FFT region
-switch PICK_MODE
-    case 1    
-        fig_obj = figure('Name', 'Pick a region to start FFT calculation', ...
-            'NumberTitle', 'off');
-        plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
-        xlim([0 max(ns_t)]);
-        xlabel('Time (s)');
-        ylabel('Acceleration (g)');
-        grid on;
-        movegui(fig_obj, 'center');
-        try
-            fft_region = ginput(2);
-            lim1 = fft_region(1, 1);
-            lim2 = fft_region(2, 1);
-            close(fig_obj);
-        catch
-            disp_error(handles, 'If region is not selected process cant continue.', 'Error');
-            return
-        end
-        if lim1==lim2
-            disp_error(handles, 'Region limits cant be the same.', 'Error');
-            return
-        end
-    case 2
-        fig_obj = figure('Name', 'Pick a point to select 30 seconds range', ...
-            'NumberTitle', 'off');
-        plot(ns_t, ns_acc_v ./ G_VALUE, 'k');
-        max_time = max(ns_t);
-        xlim([0 max_time]);
-        xlabel('Time (s)');
-        ylabel('Acceleration (g)');
-        grid on;
-        movegui(fig_obj, 'center');
-        try
-            lim1 = ginput(1);
-            lim1 = lim1(1);
-            close(fig_obj);
-            if lim1(1)+SECOND_RANGE >max_time
-                disp_error(handles, sprintf('Selected point exceeds maximum (%.01fs)', ...
-                    max_time-SECOND_RANGE), 'Interval error');
-                return
-            else
-                lim2 = lim1 + SECOND_RANGE;
-            end 
-        catch
-            disp_error(handles, 'If region is not selected process cant continue.', 'Error');
-            return
-        end
-    case 3
-        
-    otherwise
-        disp_error(handles, 'Invalid pick mode, PICK_MODE must be 1 or 2.', 'Configuration error');
-        return
-end
-
-%% Draw selected region on Tuckey plots
-axes(handles.plot_ns_v);
-draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
-draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
-axes(handles.plot_ew_v);
-draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
-draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
-axes(handles.plot_z_v);
-draw_vx_line(lim1, STYLE_HALF_PLOT_TUCKEY);
-draw_vx_line(lim2, STYLE_HALF_PLOT_TUCKEY);
-
-%% Count elements between lim1 and lim2
-t_len = 0;
-for i=1:length(ns_t)
-    if lim2>=ns_t(i) && ns_t(i)>=lim1
-        t_len = t_len + 1;
-    end
-end
-
-%% Create new arrays
-new_ns_acc = zeros(t_len, 1);
-new_ew_acc = zeros(t_len, 1);
-new_z_acc = zeros(t_len, 1);
-
-j = 1; % Index to store values
-for i=1:length(ns_t)
-    if lim2>=ns_t(i) && ns_t(i)>=lim1
-        new_ns_acc(j) = ns_acc(i);
-        new_ew_acc(j) = ew_acc(i);
-        new_z_acc(j) = z_acc(i);
-        j = j + 1;
-    end
-end
-
-%% FFT to new arrays
+%% Pick FFT region + windows
+fig_obj = figure('Name', lang{7}, 'NumberTitle', 'off');
+plot(ns_t, ns_acc ./ G_VALUE, 'k');
+xlim([0 max(ns_t)]);
+xlabel(lang{17});
+ylabel(lang{18});
+grid on;
+movegui(fig_obj, 'center');
 try
-    fft_ns = fft(new_ns_acc);
-    fft_ew = fft(new_ew_acc);
-    fft_z = fft(new_z_acc);
+    data_region = ginput(2);
+    data_region = [data_region(1, 1) data_region(2, 1)];
+    lim1 = min(data_region);
+    lim2 = max(data_region);
 catch
-    disp_error(handles, 'An error has occured while calculating FFT.', 'Fatal error');
+    disp_error(handles, 16, 11, lang);
+    return
+end
+if lim1==lim2
+    disp_error(handles, 24, 11, lang);
+    return
+end
+close(fig_obj);
+
+%% Ask time and dt of windows
+wsize = min(lim2-lim1, WINDOW_SIZE);
+data = inputdlg({sprintf(lang{21}, lim2-lim1), lang{20}}, lang{19}, ...
+    [1 50; 1 50], {num2str(wsize), num2str(WINDOW_MOVE)}); 
+wtime = data{1};
+wdt = data{2};
+
+%% Check that wtime and wdt are numbers
+if strcmp(wtime, 'i') || strcmp(wdt, 'i')
+    disp_error(handles, 22, 23, lang);
     return
 end
 
-% Absolute value
-% fft_ns = abs(fft_ns./f);
-% fft_ew = abs(fft_ew./f);
-% fft_z = abs(fft_z./f);
+% Convert to number
+try
+    wtime = str2double(wtime);
+    wdt = str2double(wdt);
+catch
+    disp_error(handles, 22, 23, lang);
+    return
+end
 
-% Create frecuency array
-N = length(fft_ns);
-freq_arr = 0 : f/N: f - 1 / N;
+%% Window array length & Tuckey window
 
-%% Select half of data
+% Window array lengths
+t_len = floor(wtime / dt);
 t_len_h = floor(t_len/2);
-f = freq_arr(1: t_len_h);
-fft_ns_h = fft_ns(1: t_len_h);
-fft_ew_h = fft_ew(1: t_len_h);
-fft_z_h = fft_z(1: t_len_h);
 
-% Re^2 + Im^2
-fft_ns_h = modlim(fft_ns_h);
-fft_ew_h = modlim(fft_ew_h);
-fft_z_h = modlim(fft_z_h);
+% Create tuckey (5%)
+tuckey = tukeywin(t_len, 0.05);
 
-%% Plot FFT
-axes(handles.plot_fft_ns);
-plot(f, fft_ns_h, STYLE_FFT_PLOT);
-xaxis_linspace(7);
-yaxis_linspace(5);
-hold on;
-grid on;
-axes(handles.plot_fft_ew);
-plot(f, fft_ew_h, STYLE_FFT_PLOT);
-xaxis_linspace(7);
-yaxis_linspace(5);
-hold on;
-grid on;
-axes(handles.plot_fft_z);
-plot(f, fft_z_h, STYLE_FFT_PLOT);
-xaxis_linspace(7);
-yaxis_linspace(5);
-hold on;
-grid on;
+%% Create frecuency array & Konno-Ohmachi window
+freq_arr = 0 : f/t_len: f - 1 / t_len;
+freq_h = freq_arr(1: t_len_h); % Half of frequency
 
-%% Konno - Ohmachi smoothing
-fc = f(floor(t_len_h/2));
-kn = konno_ohmachi(f, fc, 30);
-sh1 = fft_ns_h.*kn;
-sh2 = fft_ew_h.*kn;
-sv = fft_z_h.*kn;
+% Konno aplied to half of frequency
+fc = freq_arr(floor(length(freq_h)/2) + 1);
+konno = konno_ohmachi(freq_h, fc, 30)';
 
-%% Nakamura method
-sh = sqrt((sh1.^2 + sh2.^2)/2);
-sh_sv = sh./abs(sv);
-
-figure(10);
-hold off;
-semilogx(f, sh_sv);
-title('Nakamura + Konno-Ohmachi');
-figure(11)
-semilogx(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
-title('Arai & Tokimatsu'); % http://repobib.ubiobio.cl/jspui/bitstream/123456789/150/4/Saldivia%20P.,%20Juan%20C..pdf
-figure(12)
-fft_ns_h2 = fft_ns_h - mean(fft_ns_h);
-fft_ew_h2 = fft_ew_h - mean(fft_ew_h);
-fft_z_h2 = fft_z_h - mean(fft_z_h);
-plot(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
-title('Nakamura no smooth');
-
-figure(13);
-semilogx(f, sh_sv);
-hold on;
-semilogx(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
-semilogx(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
-title('Combinations');
-legend('Nakamura + Konno', 'Arai - Tokimasu', 'Nakamura no smooth');
-xlim([0 10]);
-
-figure(14);
-plot(f, sh_sv);
-hold on;
-plot(f, sqrt((fft_ns_h + fft_ew_h)./fft_z_h));
-plot(f, sqrt(abs(fft_ns_h2.^2) + abs(fft_ew_h2.^2))./abs(fft_z_h2));
-title('Combinations - nolog');
-legend('Nakamura + Konno', 'Arai - Tokimasu', 'Nakamura no smooth');
-xlim([0 2]);
-
-figure(15);
-valknom = (sqrt((fft_ns_h.^2 + fft_ew_h.^2)./2)./fft_z_h);
-semilogx(f, valknom);
-xlim([0 10]);
-
-vmax = 0;
-u = 0;
-for i=1:length(f)
-    if valknom(i) > vmax
-        vmax = valknom(i);
-        u = i;
-    end
-    if f(i) > 10
-        break
+%% Calculate total iterations
+totalitr = 1;
+k = 1;
+while true
+    if k*wdt + wtime + lim1 <= lim2
+        totalitr = totalitr + 1;
+        k = k + 1;
+    else
+        break;
     end
 end
-fprintf('f maxima: %.3f', f(u));
+process_timer(handles, lang, 0.001);
+
+% Iteration array
+niter_arr = 1:1:totalitr;
+
+%% Start iteration process
+
+% Sum of sh/sv to calculate mean
+sum_shsv = zeros(t_len_h, 1);
+max_freqs = zeros(totalitr, 1);
+max_shsv = zeros(totalitr, 1);
+
+tic;
+re_accel = cell(6); % Lines of region plotted on acceleration plots
+for itr=1:totalitr
+    
+    % Select iteration time limits
+    ilim1 = wdt*(itr-1)+lim1;
+    ilim2 = ilim1+wtime;
+    
+    % Plot window on accelration plots
+    if SHOW_REGION_ON_ACCELERATION
+        axes(handles.plot_ns);
+        if itr>1
+            delete(re_accel{1});
+            delete(re_accel{2});
+        end
+        re_accel{1} = draw_vx_line(ilim1, STYLE_REGION_ACCEL);
+        re_accel{2} = draw_vx_line(ilim2, STYLE_REGION_ACCEL);
+        axes(handles.plot_ew);
+        if itr>1
+            delete(re_accel{3});
+            delete(re_accel{4});
+        end
+        re_accel{3} = draw_vx_line(ilim1, STYLE_REGION_ACCEL);
+        re_accel{4} = draw_vx_line(ilim2, STYLE_REGION_ACCEL);
+        axes(handles.plot_z);
+        if itr>1
+            delete(re_accel{5});
+            delete(re_accel{6});
+        end
+        re_accel{5} = draw_vx_line(ilim1, STYLE_REGION_ACCEL);
+        re_accel{6} = draw_vx_line(ilim2, STYLE_REGION_ACCEL);
+    end
+    
+    % Create new arrays
+    ns_itr = zeros(t_len, 1);
+    ew_itr = zeros(t_len, 1);
+    z_itr = zeros(t_len, 1);
+
+    j = 1; % Index to store values
+    for i=1:length(ns_t)
+        if ilim2>=ns_t(i) && ns_t(i)>=ilim1
+            ns_itr(j) = ns_acc(i);
+            ew_itr(j) = ew_acc(i);
+            z_itr(j) = z_acc(i);
+            j = j + 1;
+        end
+    end
+    
+    % Apply tuckey window
+    ns_itr = ns_itr .* tuckey;
+    ew_itr = ew_itr .* tuckey;
+    z_itr = z_itr .* tuckey;
+    
+    % Apply fft
+    ns_fft_itr = fft(ns_itr);
+    ew_fft_itr = fft(ew_itr);
+    z_fft_itr = fft(z_itr);
+    
+    % Select half of data
+    fft_ns = ns_fft_itr(1: t_len_h);
+    fft_ew = ew_fft_itr(1: t_len_h);
+    fft_z = z_fft_itr(1: t_len_h);
+    
+    % Apply absolute value & konno
+    fft_ns = abs(fft_ns).*konno;
+    fft_ew = abs(fft_ew).*konno;
+    fft_z = abs(fft_z).*konno;
+    
+    % Calculate SH
+    sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);
+    sh_sv = sh./fft_z;
+    
+    % Delete NaN
+    sh_sv(isnan(sh_sv)) = 0;
+    
+    % Add sh/sv to mean
+    sum_shsv = sum_shsv + sh_sv;
+    
+    % Mean sh/sv
+    mean_shsv = sum_shsv./itr;
+    
+    % Calculate maximum frecuency and sh/sv
+    svsh_max = 0;
+    maxf = 0;
+    for j=1:length(freq_h)
+        if mean_shsv(j) > svsh_max && freq_h(j)>MIN_F_SHSV
+            svsh_max = mean_shsv(j);
+            maxf = freq_h(j);
+        end
+        if freq_h(j) > MAX_F_SHSV
+            break
+        end
+    end
+    
+    % Set MAX F and MAX SH/SV
+    max_freqs(itr) = maxf;
+    max_shsv(itr) = svsh_max;
+    
+    % Plot mean
+    axes(handles.plot_avg_shsv); %#ok<*LAXES>
+    plot(freq_h, mean_shsv, STYLE_AVERAGE_SHSV);
+    xlim([MIN_F_SHSV MAX_F_SHSV]);
+    
+    grid on;
+    yaxis_linspace(5);
+    
+    if SHOW_MAX_F_ON_AVERAGE_SHSV
+        hold on;
+        draw_vx_line(maxf, STYLE_MAX_F_ON_AVERAGE);
+    end
+    hold off;
+    
+    % Plot MAX F
+    axes(handles.plot_maxf);
+    plot(1:1:itr, max_freqs(1:itr), STYLE_MAX_F);
+    xlim([1 max(itr, 2)]);
+    yaxis_linspace(5);
+    hold off;
+    grid on;
+    
+    % Plot MAX SH/SV
+    axes(handles.plot_maxshsv);
+    plot(1:1:itr, max_shsv(1:itr), STYLE_MAX_SHSV);
+    xlim([1 max(itr, 2)]);
+    yaxis_linspace(5);
+    hold off;
+    grid on;
+
+    % Change timer
+    process_timer(handles, lang, itr/totalitr);
+    pause(0.005);
+    
+end
+exec_time = toc;
     
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');
+
+%% Show final statuses
+if SHOW_ITR_MAXSHSV
+    fig_obj = figure('Name', lang{30}, 'NumberTitle', 'off');
+    movegui(fig_obj, 'center');
+    setappdata(handles.root, 'figureid1', fig_obj);
+    plot(freq_h, mean_shsv, STYLE_SHSV_F);
+    hold on;
+    draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
+    xlim([MIN_F_SHSV MAX_F_SHSV]);
+    ylim([0 max(mean_shsv)*1.1]);
+    grid on;
+    xlabel(lang{31});
+    ylabel(lang{32});
+    title(lang{30});
+end
+
+if SHOW_ITR_DIALOG
+    msgbox({sprintf(lang{25}, max_freqs(end)); sprintf(lang{26}, max_shsv(end)); ...
+        ''; sprintf(lang{27}, totalitr); sprintf(lang{28}, exec_time)}, ...
+        lang{29}, 'help');
+end
+
 end

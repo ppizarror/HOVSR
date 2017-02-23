@@ -17,9 +17,12 @@ function s = get_type_file(filename, id)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+% Import constants
+constants;
+
 try
     w = strsplit(filename, '_');
-    fid = w{3};
+    fid = w{FILE_ID_POS};
 
     % If file has same file id
     if strcmp(fid, id)

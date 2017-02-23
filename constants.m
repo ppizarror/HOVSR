@@ -16,5 +16,20 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+% App constants
+LANG_AVAIABLE_LANGUAGES = 2; % Español, English
+LANG_ENTRIES = 40; % Total language entries on cell structure
+
 % Numerical constants
 G_VALUE = 980; % g, cm/s^2
+
+% File constants
+FILE_ID_POS = 3; % Example: CNV_APED_201604162359_E_100.txt (position to select id)
+
+% Window constants
+WINDOW_MOVE = 1;
+WINDOW_SIZE = 5;
+
+% SH/SV CONSTANTS
+MIN_F_SHSV = 0.01;
+MAX_F_SHSV = 5;

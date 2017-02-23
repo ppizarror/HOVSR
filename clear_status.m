@@ -1,4 +1,4 @@
-function clear_status(handles)
+function clear_status(handles, lang)
 % This function clear status of app.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -18,35 +18,39 @@ function clear_status(handles)
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 % Reset graphs
-axes(handles.plot_ns_v);
+axes(handles.plot_ns);
 cla reset;
 yaxis_linspace(5);
 set(gca,'fontsize', 10);
 grid on;
-axes(handles.plot_ew_v);
+axes(handles.plot_ew);
 cla reset;
 yaxis_linspace(5);
 grid on;
-axes(handles.plot_z_v);
+axes(handles.plot_z);
 cla reset;
 yaxis_linspace(5);
 grid on;
-axes(handles.plot_fft_ns);
+axes(handles.plot_avg_shsv);
 cla reset;
 yaxis_linspace(5);
 grid on;
-axes(handles.plot_fft_ew);
+axes(handles.plot_maxf);
 cla reset;
 yaxis_linspace(5);
 grid on;
-axes(handles.plot_fft_z);
+axes(handles.plot_maxshsv);
 cla reset;
 yaxis_linspace(5);
 grid on;
-
-% Delete data
-clearvars -except handles;
 
 % Closes generated figures
+try
+    close(getappdata(handles.root, 'figureid1'))
+catch
+end
+
+% Delete timer
+process_timer(handles, lang, 0);
 
 end

@@ -22,14 +22,4 @@ function ff = konno_ohmachi(f, fc, b)
 log10f_b = log10(f./fc).*b;
 ff = (sin(log10f_b)./(log10f_b)).^4;
 
-% Remove NaN
-for i=1:length(ff)
-    if isnan(ff(i))
-        ff(i) = 0;
-    end
-end
-
-% Normalize
-ff = ff./sum(ff);
-
 end

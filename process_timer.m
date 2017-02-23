@@ -1,6 +1,5 @@
-function disp_error(handles, msgid, titleid, lang)
-% This function display an error, deletes de status and set pointer to
-% arrow.
+function process_timer(handles, lang, itotal)
+% This function sets estimated time of the process.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -18,8 +17,23 @@ function disp_error(handles, msgid, titleid, lang)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-clear_status(handles, lang);
-set(handles.root, 'pointer', 'arrow');
-errordlg(lang{msgid}, lang{titleid});
-    
+if itotal == 0
+    imsg = '';
+else
+    imsg = sprintf(lang{6}, itotal*100);
+end
+set(handles.processing_text, 'String', imsg);
+
+% Select status plot
+h=handles.status_plot;
+axes(h);
+
+% Plot bar
+axis([0,1,0,1]);
+if itotal == 0
+    patch([0, 1, 1,0], [0,0,1,1], [255 255 255]./255);
+else
+    patch([0, itotal, itotal,0], [0,0,1,1], [29 119 29]./255);
+end
+
 end
