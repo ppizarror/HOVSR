@@ -23,3 +23,4 @@ log10f_b = log10(f./fc).*b;
 ff = (sin(log10f_b)./(log10f_b)).^4;
 
 end
+

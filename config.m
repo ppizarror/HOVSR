@@ -34,3 +34,4 @@ STYLE_SHSV_MAXF = 'r--';
 %% Iteration results
 SHOW_ITR_DIALOG = true; % Show info dialog after iteration finishes
 SHOW_ITR_MAXSHSV = true; % Show result plot after iteration finishes
+

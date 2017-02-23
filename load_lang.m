@@ -188,4 +188,6 @@ langlist = cell(LANG_ENTRIES, 1);
 for j = 1:LANG_ENTRIES
     langlist{j} = list{j, langid};
 end
+
 end
+
