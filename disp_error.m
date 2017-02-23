@@ -18,9 +18,20 @@ function disp_error(handles, msgid, titleid, lang)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
+% Config import
+config;
+
+% Clear status
 clear_status(handles, lang);
+
+% Set error
 set(handles.root, 'pointer', 'arrow');
 errordlg(lang{msgid}, lang{titleid});
+
+% Sound
+if APP_SOUNDS
+    beep;
+end
     
 end
 

@@ -40,6 +40,7 @@ end
 
 set(handles.root, 'pointer', 'watch');
 filenames = strsplit(file, '_');
+station_id = filenames{STATION_POS};
 file_id = filenames{FILE_ID_POS}; % File id (name of the file)
 file_t = get_type_file(file, file_id);
 
@@ -124,6 +125,10 @@ grid on;
 %% Pick FFT region + windows
 fig_obj = figure('Name', lang{7}, 'NumberTitle', 'off');
 plot(ns_t, ns_acc ./ G_VALUE, 'k');
+hold on;
+plot(ns_t, ew_acc ./ G_VALUE, 'r');
+plot(ns_t, z_acc ./ G_VALUE, 'b');
+xaxis_linspace(7);
 xlim([0 max(ns_t)]);
 xlabel(lang{17});
 ylabel(lang{18});
@@ -352,7 +357,7 @@ setappdata(handles.root, 'results_f', freq_h);
 
 %% Show final statuses
 if SHOW_ITR_MAXSHSV
-    fig_obj = figure('Name', lang{30}, 'NumberTitle', 'off');
+    fig_obj = figure('Name', file, 'NumberTitle', 'off');
     movegui(fig_obj, 'center');
     setappdata(handles.root, 'figureid1', fig_obj);
     plot(freq_h, mean_shsv, STYLE_SHSV_F);
