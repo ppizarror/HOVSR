@@ -336,6 +336,10 @@ exec_time = toc;
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');
 
+%% Enable buttons
+set(handles.menu_export_results, 'Enable', 'on');
+set(handles.button_exportresults, 'Enable', 'on');
+
 %% Show final statuses
 if SHOW_ITR_MAXSHSV
     fig_obj = figure('Name', lang{30}, 'NumberTitle', 'off');

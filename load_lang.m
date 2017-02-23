@@ -129,29 +129,59 @@ list{31, 2} = 'Frecuencia (Hz)';
 list{32, 1} = 'SH/SV';
 list{32, 2} = 'SH/SV';
 
-list{33, 1} = '';
-list{33, 2} = '';
+list{33, 1} = 'File';
+list{33, 2} = 'Archivo';
 
-list{34, 1} = '';
-list{34, 2} = '';
+list{34, 1} = 'Edit';
+list{34, 2} = 'Edición';
 
-list{35, 1} = '';
-list{35, 2} = '';
+list{35, 1} = 'Help';
+list{35, 2} = 'Ayuda';
 
-list{36, 1} = '';
-list{36, 2} = '';
+list{36, 1} = 'New';
+list{36, 2} = 'Nuevo';
 
-list{37, 1} = '';
-list{37, 2} = '';
+list{37, 1} = 'Export results';
+list{37, 2} = 'Exportar resultados';
 
-list{38, 1} = '';
-list{38, 2} = '';
+list{38, 1} = 'See manual';
+list{38, 2} = 'Ver el manual';
 
-list{39, 1} = '';
-list{39, 2} = '';
+list{39, 1} = 'About';
+list{39, 2} = 'Acerca de';
 
-list{40, 1} = '';
-list{40, 2} = '';
+list{40, 1} = 'Author: Pablo Pizarro @ppizarror.com, 2017.';
+list{40, 2} = 'Autor: Pablo Pizarro @ppizarror.com, 2017.';
+
+list{41, 1} = 'Thanks to: Felipe Ochoa.';
+list{41, 2} = 'Agradecimientos a: Felipe Ochoa.';
+
+list{42, 1} = 'HOVSR is a Matlab app that calculates h/v spectrum ratio.';
+list{42, 2} = 'HOVSR es una app en Matlab que calcula la razón espectral h/v.';
+
+list{43, 1} = 'Licence: GLP-2.0';
+list{43, 2} = 'Licencia: GPL-2.0';
+
+list{44, 1} = 'Project website: https://github.com/ppizarror/HOVSR';
+list{44, 2} = 'Web del proyecto: https://github.com/ppizarror/HOVSR';
+
+list{45, 1} = 'Software version: %.1f';
+list{45, 2} = 'Versión del software: %.1f';
+
+list{46, 1} = '';
+list{46, 2} = '';
+
+list{47, 1} = '';
+list{47, 2} = '';
+
+list{48, 1} = '';
+list{48, 2} = '';
+
+list{49, 1} = '';
+list{49, 2} = '';
+
+list{50, 1} = '';
+list{50, 2} = '';
 
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);

@@ -22,7 +22,7 @@ function varargout = HOVSR(varargin)
 
 % Edit the above text to modify the response to help HOVSR
 
-% Last Modified by GUIDE v2.5 15-Feb-2017 17:43:57
+% Last Modified by GUIDE v2.5 22-Feb-2017 22:52:01
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -65,10 +65,19 @@ setappdata(handles.root, 'lang', lang);
 
 % Set app strings
 set(handles.boton_seleccionar_archivo, 'String', lang{1});
-set(handles.close_button, 'String', lang{2});
+set(handles.button_exportresults, 'String', lang{37});
 set(handles.panel_acceleration_plots, 'Title', lang{3});
 set(handles.panel_averagesv, 'Title', lang{4});
 set(handles.panel_iteraciones, 'Title', lang{5});
+set(handles.menu_file, 'Label', lang{33});
+set(handles.menu_edit, 'Label', lang{34});
+set(handles.menu_help, 'Label', lang{35});
+set(handles.menu_close_app, 'Label', lang{2});
+set(handles.menu_export_results, 'Label', lang{37});
+set(handles.select_file, 'Label', lang{1});
+set(handles.menu_manual, 'Label', lang{38});
+set(handles.menu_about, 'Label', lang{39});
+set(handles.new_project, 'Label', lang{36});
 
 % Figures id's
 setappdata(handles.root, 'figureid1', 1);
@@ -103,12 +112,77 @@ function boton_seleccionar_archivo_Callback(hObject, eventdata, handles) %#ok<*D
 % Hint: get(hObject,'Value') returns toggle state of boton_seleccionar_archivo
 start_process(handles, getappdata(handles.root, 'lang'));
 
-% --- Executes on button press in close_button.
-function close_button_Callback(hObject, eventdata, handles) %#ok<*INUSD>
-% hObject    handle to close_button (see GCBO)
+% --- Executes on button press in button_exportresults.
+function button_exportresults_Callback(hObject, eventdata, handles) %#ok<*INUSD>
+% hObject    handle to button_exportresults (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-% Hint: get(hObject,'Value') returns toggle state of close_button
+% Hint: get(hObject,'Value') returns toggle state of button_exportresults
+
+
+% --------------------------------------------------------------------
+function menu_file_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_file (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_help_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_help (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_manual_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_manual (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_about_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_about (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+about(getappdata(handles.root, 'lang'));
+
+
+% --------------------------------------------------------------------
+function new_project_Callback(hObject, eventdata, handles)
+% hObject    handle to new_project (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 clear_status(handles, getappdata(handles.root, 'lang'));
+
+
+% --------------------------------------------------------------------
+function menu_export_results_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_export_results (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function menu_close_app_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_close_app (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 close;
+
+
+% --------------------------------------------------------------------
+function menu_edit_Callback(hObject, eventdata, handles)
+% hObject    handle to menu_edit (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --------------------------------------------------------------------
+function select_file_Callback(hObject, eventdata, handles)
+% hObject    handle to select_file (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+start_process(handles, getappdata(handles.root, 'lang'));

@@ -53,4 +53,8 @@ end
 % Delete timer
 process_timer(handles, lang, 0);
 
+% Disable export button
+set(handles.menu_export_results, 'Enable', 'off');
+set(handles.button_exportresults, 'Enable', 'off');
+
 end
