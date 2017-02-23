@@ -189,8 +189,8 @@ list{51, 2} = 'Archivo guardado correctamente';
 list{52, 1} = 'Process completed';
 list{52, 2} = 'Proceso terminado';
 
-list{53, 1} = '(1): Find acceleration file (E-W, N-S or Z).';
-list{53, 2} = '(1): Buscar un archivo de aceleración (E-W, N-S or Z).';
+list{53, 1} = '(1): Select acceleration files (E-W, N-S and Z), only 3 files.';
+list{53, 2} = '(1): Buscar los archivos de aceleración (E-W, N-S y Z), sólo se pueden seleccionar 3 archivos.';
 
 list{54, 1} = '(2): Select a region of the data to start the process.';
 list{54, 2} = '(2): Seleccione una región de los datos para comenzar el proceso.';
@@ -207,11 +207,11 @@ list{57, 2} = '(5): Los resultados (f vs sh/sv) pueden ser exportados a un archi
 list{58, 1} = 'Manual';
 list{58, 2} = 'Manual';
 
-list{59, 1} = '';
-list{59, 2} = '';
+list{59, 1} = 'Operation cancelled by user.';
+list{59, 2} = 'Operación cancelada.';
 
-list{60, 1} = '';
-list{60, 2} = '';
+list{60, 1} = 'You must choose 3 files.';
+list{60, 2} = 'Debes elegir 3 archivos.';
 
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);

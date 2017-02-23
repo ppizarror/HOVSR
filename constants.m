@@ -24,10 +24,6 @@ VERSION = 1.3;
 % Numerical constants
 G_VALUE = 980; % g, cm/s^2
 
-% File constants
-STATION_POS = 2;
-FILE_ID_POS = 3; % Example: CNV_APED_201604162359_E_100.txt (position to select id)
-
 % Window constants
 WINDOW_MOVE = 1;
 WINDOW_SIZE = 5;

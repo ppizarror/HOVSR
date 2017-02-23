@@ -17,8 +17,8 @@
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 %% App config
-LANGUAGE = 1; % 1: English, 2: Spanish
 APP_SOUNDS = true;
+LANGUAGE = 1; % 1: English, 2: Spanish
 
 %% Plot configuration
 SHOW_MAX_F_ON_AVERAGE_SHSV = true; % Show maximum f on AVERAGE_SHSV
@@ -29,6 +29,7 @@ STYLE_MAX_F = 'k-';
 STYLE_MAX_F_ON_AVERAGE = 'r--';
 STYLE_MAX_SHSV = 'k-';
 STYLE_REGION_ACCEL = 'k--';
+STYLE_REGION_ACCEL_FIX = 'k';
 STYLE_SHSV_F = 'k-';
 STYLE_SHSV_MAXF = 'r--';
 

@@ -21,38 +21,39 @@ function start_process(handles, lang)
 config;
 constants;
 
-%% Select file
+%% Select files
 lastfolder = getappdata(handles.root, 'lasthandles_folder');
 if ~strcmp(lastfolder, '')
-    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, lastfolder);
+    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, lastfolder, 'MultiSelect', 'on');
 else
-    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9});
+    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, 'MultiSelect', 'on');
 end
-if file==0
+
+% Get total files selected
+[~, totalfiles] = size(file);
+
+% Save last folder
+setappdata(handles.root, 'lasthandles_folder', folder);
+
+% If user does not selected 3 files
+if totalfiles == 3 && iscell(file)
+    clear_status(handles, lang); % Clear previous status
+else
+    disp_error(handles, 60, 15, lang);
     return
-else
-    % Clear previous status
-    clear_status(handles, lang);
-    
-    % Save last folder
-    setappdata(handles.root, 'lasthandles_folder', folder);
 end
 
+% Set pointer
 set(handles.root, 'pointer', 'watch');
-filenames = strsplit(file, '_');
-station_id = filenames{STATION_POS};
-file_id = filenames{FILE_ID_POS}; % File id (name of the file)
-file_t = get_type_file(file, file_id);
 
-files = cell(3, 1); % Necessary files, 1: NS, 2: EW, 3: Z
-files{file_t} = file;
+% Necessary files, 1: NS, 2: EW, 3: Z
+files = cell(3, 1);
 
-%% Scan folder to find the rest of the files
-folder_files = dir(folder);
-for f = 1:length(folder_files)
-    ft = get_type_file(folder_files(f).name, file_id);
+%% Save each file to an cell structure
+for f = 1:totalfiles
+    ft = get_type_file(file{f});
     if ft
-        files{ft} = folder_files(f).name;
+        files{ft} = file{f};
     end
 end
 
@@ -128,7 +129,7 @@ plot(ns_t, ns_acc ./ G_VALUE, 'k');
 hold on;
 plot(ns_t, ew_acc ./ G_VALUE, 'r');
 plot(ns_t, z_acc ./ G_VALUE, 'b');
-xaxis_linspace(7);
+xaxis_linspace(10);
 xlim([0 max(ns_t)]);
 xlabel(lang{17});
 ylabel(lang{18});
@@ -152,10 +153,15 @@ close(fig_obj);
 %% Ask time and dt of windows
 wsize = min(lim2-lim1, WINDOW_SIZE);
 data = inputdlg({sprintf(lang{21}, lim2-lim1), lang{20}}, lang{19}, ...
-    [1 50; 1 50], {num2str(wsize), num2str(WINDOW_MOVE)}); 
-wtime = data{1};
-wdt = data{2};
-
+                [1 50; 1 50], {num2str(wsize), num2str(WINDOW_MOVE)});
+try
+    wtime = data{1};
+    wdt = data{2};
+catch
+    disp_error(handles, 59, 11, lang);
+    return
+end
+    
 %% Check that wtime and wdt are numbers
 if strcmp(wtime, 'i') || strcmp(wdt, 'i')
     disp_error(handles, 22, 23, lang);
@@ -185,8 +191,8 @@ freq_arr = 0 : f/t_len: f - 1 / t_len;
 freq_h = freq_arr(1: t_len_h); % Half of frequency
 
 % Konno aplied to half of frequency
-fc = freq_arr(floor(length(freq_h)/2) + 1);
-konno = konno_ohmachi(freq_h, fc, 30)';
+% fc = freq_arr(floor(length(freq_h)/2) + 1);
+% konno = konno_ohmachi(freq_h, fc, 30)'; %#ok<*NASGU>
 
 %% Calculate total iterations
 totalitr = 1;
@@ -200,6 +206,18 @@ while true
     end
 end
 process_timer(handles, lang, 0.001);
+
+%% Plot limits on accel plots
+lim2fix = lim1 + (totalitr-1)*wdt + wtime;
+axes(handles.plot_ns);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
+axes(handles.plot_ew);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
+axes(handles.plot_z);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
 
 %% Start iteration process
 
@@ -271,10 +289,22 @@ for itr=1:totalitr
     fft_ew = ew_fft_itr(1: t_len_h);
     fft_z = z_fft_itr(1: t_len_h);
     
+    % fft_ns = konno_ohmachi(fft_ns, freq_h, 30, false);
+    % fft_ew = konno_ohmachi(fft_ew, freq_h, 30, false);
+    % fft_z = konno_ohmachi(fft_z, freq_h, 30, false);  
+    % fft_ns = real(fft_ns);
+    % fft_nw = real(fft_ew);
+    % fft_z = real(fft_z);
+    
     % Apply absolute value & konno
-    fft_ns = abs(fft_ns).*konno;
-    fft_ew = abs(fft_ew).*konno;
-    fft_z = abs(fft_z).*konno;
+    % fft_ns = abs(fft_ns).*konno;
+    % fft_ew = abs(fft_ew).*konno;
+    % fft_z = abs(fft_z).*konno;
+    
+    % Apply loess smooth matlab
+    fft_ns = smooth(freq_h, abs(fft_ns), 0.3, 'rloess');
+    fft_ew = smooth(freq_h, abs(fft_ew), 0.3, 'rloess');
+    fft_z = smooth(freq_h, abs(fft_z), 0.3, 'rloess'); 
     
     % Calculate SH
     sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);
@@ -357,14 +387,18 @@ setappdata(handles.root, 'results_f', freq_h);
 
 %% Show final statuses
 if SHOW_ITR_MAXSHSV
-    fig_obj = figure('Name', file, 'NumberTitle', 'off');
+    figurename = strrep(file{1}, '_E', '');
+    figurename = strrep(figurename, '_Z', '');
+    figurename = strrep(figurename, '_W', '');
+    figurename = strrep(figurename, '.txt', '');
+    fig_obj = figure('Name', figurename, 'NumberTitle', 'off');
     movegui(fig_obj, 'center');
     setappdata(handles.root, 'figureid1', fig_obj);
     plot(freq_h, mean_shsv, STYLE_SHSV_F);
     hold on;
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
     xlim([MIN_F_SHSV MAX_F_SHSV]);
-    ylim([0 max(mean_shsv)*1.1]);
+    ylim([0 max_shsv(end)*1.1]);
     grid on;
     xlabel(lang{31});
     ylabel(lang{32});

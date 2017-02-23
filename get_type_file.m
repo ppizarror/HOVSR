@@ -1,5 +1,5 @@
-function s = get_type_file(filename, id)
-% Returns file type (NS, EW, Z) for a same fileid.
+function s = get_type_file(filename)
+% Returns file type (NS, EW, Z).
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -22,21 +22,17 @@ constants;
 
 try
     w = strsplit(filename, '_');
-    fid = w{FILE_ID_POS};
-
-    % If file has same file id
-    if strcmp(fid, id)
-        for i=1:length(w)
-            if strcmp(w(i), 'N')
-                s=1;
-                return
-            elseif strcmp(w(i), 'E')
-                s=2;
-                return
-            elseif strcmp(w(i), 'Z')
-                s=3;
-                return
-            end
+    
+    for i=1:length(w)
+        if strcmp(w(i), 'N')
+            s=1;
+            return
+        elseif strcmp(w(i), 'E')
+            s=2;
+            return
+        elseif strcmp(w(i), 'Z')
+            s=3;
+            return
         end
     end
 catch
