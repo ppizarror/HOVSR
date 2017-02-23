@@ -186,7 +186,7 @@ list{50, 2} = 'Error al guardar los resultados.';
 list{51, 1} = 'Results saved successfully';
 list{51, 2} = 'Archivo guardado correctamente';
 
-list{52, 1} = 'Process finished';
+list{52, 1} = 'Process completed';
 list{52, 2} = 'Proceso terminado';
 
 list{53, 1} = '(1): Find acceleration file (E-W, N-S or Z).';

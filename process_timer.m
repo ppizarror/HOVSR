@@ -18,11 +18,14 @@ function process_timer(handles, lang, itotal)
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 if itotal == 0
-    imsg = '';
+    set(handles.processing_text, 'String', '');
 else
-    imsg = sprintf(lang{6}, itotal*100);
+    if itotal ~=1
+        set(handles.processing_text, 'String', sprintf(lang{6}, itotal*100));
+    else
+        set(handles.processing_text, 'String', lang{52});
+    end
 end
-set(handles.processing_text, 'String', imsg);
 
 % Select status plot
 h=handles.status_plot;
