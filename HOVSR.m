@@ -22,7 +22,7 @@ function varargout = HOVSR(varargin)
 
 % Edit the above text to modify the response to help HOVSR
 
-% Last Modified by GUIDE v2.5 22-Feb-2017 22:52:01
+% Last Modified by GUIDE v2.5 23-Feb-2017 00:02:04
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -150,6 +150,7 @@ function menu_manual_Callback(hObject, eventdata, handles)
 % hObject    handle to menu_manual (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+manual(getappdata(handles.root, 'lang'));
 
 
 % --------------------------------------------------------------------
@@ -197,4 +198,3 @@ function select_file_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 start_process(handles, getappdata(handles.root, 'lang'));
-

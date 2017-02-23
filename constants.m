@@ -19,7 +19,7 @@
 % App constants
 LANG_AVAIABLE_LANGUAGES = 2; % Español, English
 LANG_ENTRIES = 60; % Total language entries on cell structure
-VERSION = 1.2;
+VERSION = 1.3;
 
 % Numerical constants
 G_VALUE = 980; % g, cm/s^2

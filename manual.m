@@ -19,7 +19,7 @@ function manual(lang)
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 % Display message box
-msgbox({lang{42}; }, lang{58}, 'help');
+msgbox({lang{53}; lang{54}; lang{55}; lang{56}; lang{57}}, lang{58}, 'help');
 
 end
 
