@@ -9,3 +9,6 @@ data/
 
 # Matlab asv files
 *.asv
+
+# Ignore txt files
+*.txt
