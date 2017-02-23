@@ -57,5 +57,10 @@ process_timer(handles, lang, 0);
 set(handles.menu_export_results, 'Enable', 'off');
 set(handles.button_exportresults, 'Enable', 'off');
 
+% Disable results
+setappdata(handles.root, 'results', false);
+setappdata(handles.root, 'results_shsv', []);
+setappdata(handles.root, 'results_f', []);
+
 end
 

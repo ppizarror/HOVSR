@@ -82,6 +82,15 @@ set(handles.new_project, 'Label', lang{36});
 % Figures id's
 setappdata(handles.root, 'figureid1', 1);
 
+% Last folder opened
+setappdata(handles.root, 'lasthandles_folder', '');
+setappdata(handles.root, 'lastsave_folder', '');
+
+% Results
+setappdata(handles.root, 'results', false);
+setappdata(handles.root, 'results_shsv', []);
+setappdata(handles.root, 'results_f', []);
+
 % Clear status
 clear_status(handles, lang);
 
@@ -119,6 +128,7 @@ function button_exportresults_Callback(hObject, eventdata, handles) %#ok<*INUSD>
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hint: get(hObject,'Value') returns toggle state of button_exportresults
+export_results(handles, getappdata(handles.root, 'lang'));
 
 
 % --------------------------------------------------------------------
@@ -163,6 +173,7 @@ function menu_export_results_Callback(hObject, eventdata, handles)
 % hObject    handle to menu_export_results (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+export_results(handles, getappdata(handles.root, 'lang'));
 
 
 % --------------------------------------------------------------------

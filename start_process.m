@@ -22,12 +22,20 @@ config;
 constants;
 
 %% Select file
-[file, folder] = uigetfile({'*.txt', lang{8}}, lang{9});
+lastfolder = getappdata(handles.root, 'lasthandles_folder');
+if ~strcmp(lastfolder, '')
+    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, lastfolder);
+else
+    [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9});
+end
 if file==0
     return
 else
     % Clear previous status
     clear_status(handles, lang);
+    
+    % Save last folder
+    setappdata(handles.root, 'lasthandles_folder', folder);
 end
 
 set(handles.root, 'pointer', 'watch');
@@ -188,9 +196,6 @@ while true
 end
 process_timer(handles, lang, 0.001);
 
-% Iteration array
-niter_arr = 1:1:totalitr;
-
 %% Start iteration process
 
 % Sum of sh/sv to calculate mean
@@ -339,6 +344,11 @@ set(handles.root, 'pointer', 'arrow');
 %% Enable buttons
 set(handles.menu_export_results, 'Enable', 'on');
 set(handles.button_exportresults, 'Enable', 'on');
+
+%% Save data
+setappdata(handles.root, 'results', true);
+setappdata(handles.root, 'results_shsv', mean_shsv);
+setappdata(handles.root, 'results_f', freq_h);
 
 %% Show final statuses
 if SHOW_ITR_MAXSHSV

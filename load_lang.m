@@ -168,20 +168,50 @@ list{44, 2} = 'Web del proyecto: https://github.com/ppizarror/HOVSR';
 list{45, 1} = 'Software version: %.1f';
 list{45, 2} = 'Versión del software: %.1f';
 
-list{46, 1} = '';
-list{46, 2} = '';
+list{46, 1} = 'Text file (*.txt)';
+list{46, 2} = 'Archivo de texto (*.txt)';
 
-list{47, 1} = '';
-list{47, 2} = '';
+list{47, 1} = 'Export results as';
+list{47, 2} = 'Exportar resultados como';
 
-list{48, 1} = '';
-list{48, 2} = '';
+list{48, 1} = 'Results are not calcualted.';
+list{48, 2} = 'Los resultados no existen.';
 
-list{49, 1} = '';
-list{49, 2} = '';
+list{49, 1} = 'Fatal Error';
+list{49, 2} = 'Error Fatal';
 
-list{50, 1} = '';
-list{50, 2} = '';
+list{50, 1} = 'Error when saving results.';
+list{50, 2} = 'Error al guardar los resultados.';
+
+list{51, 1} = 'Results saved successfully';
+list{51, 2} = 'Archivo guardado correctamente';
+
+list{52, 1} = 'Process finished';
+list{52, 2} = 'Proceso terminado';
+
+list{53, 1} = '(1): Find acceleration file (E-W, N-S or Z).';
+list{53, 2} = '(1): Buscar un archivo de aceleración (E-W, N-S or Z).';
+
+list{54, 1} = '(2): Select a region of the data to start the process.';
+list{54, 2} = '(2): Seleccione una región de los datos para comenzar el proceso.';
+
+list{55, 1} = '(3): Define the window size (in seconds) and the movement of the window.';
+list{55, 2} = '(3): Defina el tamaño de la ventana y el movimiento de ella en segundos.';
+
+list{56, 1} = '(4): The iteration process will start and sh/sv vs f plot will apear.';
+list{56, 2} = '(4): El proceso de iteración dará comienzo y se mostrará el gráfico de sh/sv vs f.';
+
+list{57, 1} = '(5): Results (f vs sh/sv) can be exported to a file if Export Results button is pressed.';
+list{57, 2} = '(5): Los resultados (f vs sh/sv) pueden ser exportados a un archivo si se presiona el boton Exportar Resultados.';
+
+list{58, 1} = 'Manual';
+list{58, 2} = 'Manual';
+
+list{59, 1} = '';
+list{59, 2} = '';
+
+list{60, 1} = '';
+list{60, 2} = '';
 
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);
