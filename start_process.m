@@ -23,7 +23,7 @@ constants;
 
 %% Select files
 lastfolder = getappdata(handles.root, 'lasthandles_folder');
-if ~strcmp(lastfolder, '')
+if ~strcmp(lastfolder, '') && ~ isnumeric(lastfolder)
     [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, lastfolder, 'MultiSelect', 'on');
 else
     [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, 'MultiSelect', 'on');
@@ -302,9 +302,17 @@ for itr=1:totalitr
     % fft_z = abs(fft_z).*konno;
     
     % Apply loess smooth matlab
-    fft_ns = smooth(freq_h, abs(fft_ns), 0.3, 'rloess');
-    fft_ew = smooth(freq_h, abs(fft_ew), 0.3, 'rloess');
-    fft_z = smooth(freq_h, abs(fft_z), 0.3, 'rloess'); 
+    % fft_ns = smooth(freq_h, abs(fft_ns), SMOOTH_SPAN, SMOOTH_TYPE);
+    % fft_ew = smooth(freq_h, abs(fft_ew), SMOOTH_SPAN, SMOOTH_TYPE);
+    % fft_z = smooth(freq_h, abs(fft_z), SMOOTH_SPAN, SMOOTH_TYPE);
+    
+    % fft_ns = smooth(abs(fft_ns));
+    % fft_ew = smooth(abs(fft_ew));
+    % fft_z = smooth(abs(fft_z));
+    
+    fft_ns = abs(smooth(fft_ns));
+    fft_ew = abs(smooth(fft_ew));
+    fft_z = abs(smooth(fft_z));
     
     % Calculate SH
     sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);

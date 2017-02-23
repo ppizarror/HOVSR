@@ -1,4 +1,5 @@
-%% Constants used by app
+% APP VERSION
+% Set version of the application.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -16,18 +17,6 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-% Numerical constants
-G_VALUE = 980; % g, cm/s^2
-
-% Window constants (default parameters)
-WINDOW_MOVE = 1;
-WINDOW_SIZE = 30;
-
-% SH/SV CONSTANTS
-MIN_F_SHSV = 0.01;
-MAX_F_SHSV = 10;
-
-% SMOOTH TYPE
-SMOOTH_SPAN = 0.1;
-SMOOTH_TYPE = 'loess';
+% App constants
+VERSION = 1.3;
 

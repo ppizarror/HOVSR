@@ -18,8 +18,9 @@ function langlist = load_lang(langid)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-%% Constant import
-constants;
+%% Constants
+LANG_AVAIABLE_LANGUAGES = 2; % Español, English
+LANG_ENTRIES = 60; % Total language entries on cell structure
 
 %% Check if langid is valid
 if ~ (1 <= langid && langid <= LANG_AVAIABLE_LANGUAGES)

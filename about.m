@@ -18,8 +18,8 @@ function about(lang)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-% Constants import
-constants;
+% Version import
+appversion;
 
 % Display message box
 msgbox({'HOVSR'; lang{42}; ''; lang{40}; lang{41}; lang{44}; ''; ...
