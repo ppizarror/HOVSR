@@ -8,8 +8,8 @@ function new_spectrum = smooth_spectra(spectrum, freq, stype)
 %   stype:  Type of the smooth
 %           (1) Konno-Ohmachi with no abs value
 %           (2) Konno-Ohmachi with abs value
-%           (3) Smooth function with no abs value + normalize
-%           (4) Smooth function with abs value + normalize
+%           (3) Konno-Ohmachi with no abs value + normalize
+%           (4) Konno-Ohmachi with abs value + normalize
 %           (5) Smooth function with no abs value
 %           (6) Smooth function with abs value
 %
@@ -43,7 +43,7 @@ switch stype
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, false)';
         new_spectrum = spectrum .* konno;
         
-        % Konno-Ohmachi + abs
+    % Konno-Ohmachi + abs
     case 2
         fc = freq(floor(length(freq)/2)+1); % Central frequency
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, false)';
@@ -52,13 +52,13 @@ switch stype
         % Apply abs value
         new_spectrum = abs(new_spectrum);
         
-        % Konno-Ohmachi - no abs + normalize
+    % Konno-Ohmachi - no abs + normalize
     case 3
         fc = freq(floor(length(freq)/2)+1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
         new_spectrum = spectrum .* konno;
         
-        % Konno-Ohmachi + abs + normalize
+    % Konno-Ohmachi + abs + normalize
     case 4
         fc = freq(floor(length(freq)/2)+1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
@@ -67,11 +67,11 @@ switch stype
         % Apply abs value
         new_spectrum = abs(new_spectrum);
         
-        % Uses smooth function - no abs
+    % Uses smooth function - no abs
     case 5
         new_spectrum = smooth(freq, spectrum, SMOOTH_SPAN, SMOOTH_TYPE);
         
-        % Uses smooth function + abs
+    % Uses smooth function + abs
     case 6
         new_spectrum = smooth(freq, abs(spectrum), SMOOTH_SPAN, SMOOTH_TYPE);
         

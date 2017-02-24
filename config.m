@@ -21,6 +21,9 @@
 APP_SOUNDS = true;
 LANGUAGE = 1; % 1: English, 2: Spanish
 
+%% Smooth type
+SMOOTH_TYPE = 6;
+
 %% Plot configuration
 SHOW_MAX_F_ON_AVERAGE_SHSV = true; % Show maximum f on AVERAGE_SHSV
 SHOW_REGION_ON_ACCELERATION = true;
@@ -33,6 +36,10 @@ STYLE_REGION_ACCEL = 'k--';
 STYLE_REGION_ACCEL_FIX = 'k';
 STYLE_SHSV_F = 'k-';
 STYLE_SHSV_MAXF = 'r--';
+
+% ylim([SHSV_YLIM_MIN_CF*min(shsv) SHSV_YLIM_MAX_CF*max(shsv)]); 
+SHSV_YLIM_MIN_CF = 0;
+SHSV_YLIM_MAX_CF = 1.10;
 
 %% Iteration results
 SHOW_ITR_DIALOG = true; % Show info dialog after iteration finishes

@@ -49,6 +49,10 @@ try
     close(getappdata(handles.root, 'figureid1'))
 catch
 end
+try
+    close(getappdata(handles.root, 'resultmsg'));
+catch
+end
 
 % Delete timer
 process_timer(handles, lang, 0);

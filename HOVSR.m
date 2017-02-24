@@ -81,6 +81,7 @@ set(handles.new_project, 'Label', lang{36});
 
 % Figures id's
 setappdata(handles.root, 'figureid1', 1);
+setappdata(handles.root, 'resultmsg', 0);
 
 % Last folder opened
 setappdata(handles.root, 'lasthandles_folder', '');

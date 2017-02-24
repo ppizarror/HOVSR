@@ -130,6 +130,7 @@ plot(ns_t, ns_acc./G_VALUE, 'k');
 hold on;
 plot(ns_t, ew_acc./G_VALUE, 'r');
 plot(ns_t, z_acc./G_VALUE, 'b');
+alpha(.7);
 xaxis_linspace(10);
 xlim([0, max(ns_t)]);
 xlabel(lang{17});
@@ -222,6 +223,7 @@ draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
 sum_shsv = zeros(t_len_h, 1);
 max_freqs = zeros(totalitr, 1);
 max_shsv = zeros(totalitr, 1);
+min_shsv = zeros(totalitr, 1);
 
 tic;
 re_accel = cell(6); % Lines of region plotted on acceleration plots
@@ -288,9 +290,9 @@ for itr = 1:totalitr
     
     % Apply smooth
     try
-        fft_ns = smooth_spectra(fft_ns, freq_h, 2);
-        fft_ew = smooth_spectra(fft_ew, freq_h, 2);
-        fft_z = smooth_spectra(fft_z, freq_h, 2);
+        fft_ns = smooth_spectra(fft_ns, freq_h, SMOOTH_TYPE);
+        fft_ew = smooth_spectra(fft_ew, freq_h, SMOOTH_TYPE);
+        fft_z = smooth_spectra(fft_z, freq_h, SMOOTH_TYPE);
     catch
         disp_error(handles, 61, 11, lang);
         return
@@ -309,30 +311,39 @@ for itr = 1:totalitr
     % Mean sh/sv
     mean_shsv = sum_shsv ./ itr;
     
-    % Calculate maximum frecuency and sh/sv
+    % Calculate maximum/minimum frecuency and sh/sv
     svsh_max = 0;
+    svsh_min = inf;
     maxf = 0;
     for j = 1:length(freq_h)
         if mean_shsv(j) > svsh_max && freq_h(j) > MIN_F_SHSV
             svsh_max = mean_shsv(j);
             maxf = freq_h(j);
         end
+        if mean_shsv(j) < svsh_min && freq_h(j) > MIN_F_SHSV && mean_shsv(j) > 0
+            svsh_min = mean_shsv(j);
+        end
         if freq_h(j) > MAX_F_SHSV
             break
         end
     end
     
-    % Set MAX F and MAX SH/SV
+    % Set MAX F and MAX/MIN SH/SV
     max_freqs(itr) = maxf;
     max_shsv(itr) = svsh_max;
+    min_shsv(itr) = svsh_min;
     
     % Plot mean
     axes(handles.plot_avg_shsv); %#ok<*LAXES>
     plot(freq_h, mean_shsv, STYLE_AVERAGE_SHSV);
     xlim([MIN_F_SHSV, MAX_F_SHSV]);
-    
+    lims = get(gca, 'ylim');
+    ylim([0, lims(2)]);
     grid on;
-    yaxis_linspace(5);
+    try
+        yaxis_linspace(5);
+    catch
+    end
     
     if SHOW_MAX_F_ON_AVERAGE_SHSV
         hold on;
@@ -344,6 +355,8 @@ for itr = 1:totalitr
     axes(handles.plot_maxf);
     plot(1:1:itr, max_freqs(1:itr), STYLE_MAX_F);
     xlim([1, max(itr, 2)]);
+    lims = get(gca, 'ylim');
+    ylim([0, lims(2)]);
     yaxis_linspace(5);
     hold off;
     grid on;
@@ -352,7 +365,10 @@ for itr = 1:totalitr
     axes(handles.plot_maxshsv);
     plot(1:1:itr, max_shsv(1:itr), STYLE_MAX_SHSV);
     xlim([1, max(itr, 2)]);
-    yaxis_linspace(5);
+    try
+        yaxis_linspace(5);
+    catch
+    end
     hold off;
     grid on;
     
@@ -388,17 +404,20 @@ if SHOW_ITR_MAXSHSV
     hold on;
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
     xlim([MIN_F_SHSV, MAX_F_SHSV]);
-    ylim([0, max_shsv(end) * 1.1]);
+    ylim([min_shsv(end) * SHSV_YLIM_MIN_CF, max_shsv(end) * SHSV_YLIM_MAX_CF ]);
     grid on;
     xlabel(lang{31});
     ylabel(lang{32});
     title(lang{30});
 end
 
+% Message to user
 if SHOW_ITR_DIALOG
-    msgbox({sprintf(lang{25}, max_freqs(end)); sprintf(lang{26}, max_shsv(end)); ...
-        ''; sprintf(lang{27}, totalitr); sprintf(lang{28}, exec_time)}, ...
+    resultmsg = msgbox({sprintf(lang{25}, max_freqs(end)); sprintf(lang{26}, ...
+        max_shsv(end)); ''; sprintf(lang{27}, totalitr); sprintf(lang{28}, exec_time)}, ...
         lang{29}, 'help');
+    setappdata(handles.root, 'resultmsg', resultmsg);
+    movegui(resultmsg, 'center');
 end
 
 end
