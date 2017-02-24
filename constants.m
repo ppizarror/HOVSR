@@ -1,4 +1,5 @@
 % CONSTANTS
+% Set numerical constants.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %

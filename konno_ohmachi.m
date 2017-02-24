@@ -1,4 +1,5 @@
 function ff = konno_ohmachi(f, fc, b, normalize)
+% KONNO OHMACHI
 % Konno and Ohmachi (1998) [1] smoothing.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -20,7 +21,7 @@ function ff = konno_ohmachi(f, fc, b, normalize)
 % [1]: Konno, K. and Omachi, T., 1998, Bull. Seism. Soc. Am., 88, 228-241.
 
 log10f_b = b * log10(f./fc);
-ff = (sin(log10f_b)./(log10f_b)).^4;
+ff = (sin(log10f_b) ./ (log10f_b)) .^ 4;
 
 if normalize
     ff = ff ./ sum(ff);

@@ -1,4 +1,5 @@
 function xaxis_linspace(nticks)
+% XAXIS LINSPACE
 % This function sets xticks as linspace of nticks total points.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.

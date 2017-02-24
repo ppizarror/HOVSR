@@ -1,4 +1,5 @@
 function obj = draw_vx_line(x, style)
+% DRAW VX LINE
 % This function draw a vertical line on x value.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.

@@ -19,7 +19,7 @@ function export_results(handles, lang)
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 %% Get results status
-if ~ getappdata(handles.root, 'results')
+if ~getappdata(handles.root, 'results')
     disp_error(handles, 48, 49, lang);
     return
 end
@@ -33,10 +33,10 @@ else
 end
 
 %% If file is not valid
-if file==0
+if file == 0
     return
     
-% Save last folder
+    % Save last folder
 else
     setappdata(handles.root, 'lastsave_folder', folder);
 end
@@ -50,9 +50,9 @@ try
     % Get data
     shsv = getappdata(handles.root, 'results_shsv');
     f = getappdata(handles.root, 'results_f');
-
+    
     % Save data
-    for j=1:length(f)
+    for j = 1:length(f)
         fprintf(new_file, '%f\t%f\n', f(j), shsv(j));
     end
     fclose(new_file);

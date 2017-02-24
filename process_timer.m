@@ -1,4 +1,5 @@
 function process_timer(handles, lang, itotal)
+% PROCESS TIMER
 % This function sets estimated time of the process.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -20,7 +21,7 @@ function process_timer(handles, lang, itotal)
 if itotal == 0
     set(handles.processing_text, 'String', '');
 else
-    if itotal ~=1
+    if itotal ~= 1
         set(handles.processing_text, 'String', sprintf(lang{6}, itotal*100));
     else
         set(handles.processing_text, 'String', lang{52});
@@ -28,15 +29,15 @@ else
 end
 
 % Select status plot
-h=handles.status_plot;
+h = handles.status_plot;
 axes(h);
 
 % Plot bar
-axis([0,1,0,1]);
+axis([0, 1, 0, 1]);
 if itotal == 0
-    patch([0, 1, 1,0], [0,0,1,1], [255 255 255]./255);
+    patch([0, 1, 1, 0], [0, 0, 1, 1], [255, 255, 255]./255);
 else
-    patch([0, itotal, itotal,0], [0,0,1,1], [29 119 29]./255);
+    patch([0, itotal, itotal, 0], [0, 0, 1, 1], [29, 119, 29]./255);
 end
 
 end

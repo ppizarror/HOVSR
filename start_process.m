@@ -1,4 +1,5 @@
 function start_process(handles, lang)
+% START PROCESS
 % This function starts calculation process.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -23,7 +24,7 @@ constants;
 
 %% Select files
 lastfolder = getappdata(handles.root, 'lasthandles_folder');
-if ~strcmp(lastfolder, '') && ~ isnumeric(lastfolder)
+if ~strcmp(lastfolder, '') && ~isnumeric(lastfolder)
     [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, lastfolder, 'MultiSelect', 'on');
 else
     [file, folder] = uigetfile({'*.txt', lang{8}}, lang{9}, 'MultiSelect', 'on');
@@ -86,14 +87,14 @@ ew_t = data_ew(:, 1);
 z_t = data_z(:, 1);
 
 %% Checks that all files have the same size of elements
-if length(ns_acc)~=length(ew_acc) && length(ew_acc)~=length(z_acc)
+if length(ns_acc) ~= length(ew_acc) && length(ew_acc) ~= length(z_acc)
     disp_error(handles, 13, 14, lang);
     return
 end
 
 %% Calculate frecuency and dt
-dt = ns_t(2)-ns_t(1);
-f = 1/dt; % Sampling rate
+dt = ns_t(2) - ns_t(1);
+f = 1 / dt; % Sampling rate
 
 %% Baseline correction
 ns_acc = detrend(ns_acc, 0);
@@ -104,47 +105,47 @@ z_acc = detrend(z_acc, 0);
 axes(handles.plot_ns);
 plot(ns_t, ns_acc, STYLE_ACCELERATION_PLOT);
 hold on;
-xlim([0 max(ns_t)]);
+xlim([0, max(ns_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 axes(handles.plot_ew);
 plot(ew_t, ew_acc, STYLE_ACCELERATION_PLOT);
 hold on;
-xlim([0 max(ew_t)]);
+xlim([0, max(ew_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 axes(handles.plot_z);
 plot(z_t, z_acc, STYLE_ACCELERATION_PLOT);
 hold on;
-xlim([0 max(z_t)]);
+xlim([0, max(z_t)]);
 yaxis_linspace(5);
 xaxis_linspace(6);
 grid on;
 
 %% Pick FFT region + windows
 fig_obj = figure('Name', lang{7}, 'NumberTitle', 'off');
-plot(ns_t, ns_acc ./ G_VALUE, 'k');
+plot(ns_t, ns_acc./G_VALUE, 'k');
 hold on;
-plot(ns_t, ew_acc ./ G_VALUE, 'r');
-plot(ns_t, z_acc ./ G_VALUE, 'b');
+plot(ns_t, ew_acc./G_VALUE, 'r');
+plot(ns_t, z_acc./G_VALUE, 'b');
 xaxis_linspace(10);
-xlim([0 max(ns_t)]);
+xlim([0, max(ns_t)]);
 xlabel(lang{17});
 ylabel(lang{18});
 grid on;
 movegui(fig_obj, 'center');
 try
     data_region = ginput(2);
-    data_region = [data_region(1, 1) data_region(2, 1)];
+    data_region = [data_region(1, 1), data_region(2, 1)];
     lim1 = min(data_region);
     lim2 = max(data_region);
 catch
     disp_error(handles, 16, 11, lang);
     return
 end
-if lim1==lim2
+if lim1 == lim2
     disp_error(handles, 24, 11, lang);
     return
 end
@@ -153,7 +154,7 @@ close(fig_obj);
 %% Ask time and dt of windows
 wsize = min(lim2-lim1, WINDOW_SIZE);
 data = inputdlg({sprintf(lang{21}, lim2-lim1), lang{20}}, lang{19}, ...
-                [1 50; 1 50], {num2str(wsize), num2str(WINDOW_MOVE)});
+    [1, 50; 1, 50], {num2str(wsize), num2str(WINDOW_MOVE)});
 try
     wtime = data{1};
     wdt = data{2};
@@ -161,7 +162,7 @@ catch
     disp_error(handles, 59, 11, lang);
     return
 end
-    
+
 %% Check that wtime and wdt are numbers
 if strcmp(wtime, 'i') || strcmp(wdt, 'i')
     disp_error(handles, 22, 23, lang);
@@ -180,21 +181,21 @@ end
 %% Window array length & Tuckey window
 
 % Window array lengths
-t_len = floor(wtime / dt);
+t_len = floor(wtime/dt);
 t_len_h = floor(t_len/2);
 
 % Create tuckey (5%)
 tuckey = tukeywin(t_len, 0.05);
 
 %% Create frecuency array
-freq_arr = 0 : f/t_len: f - 1 / t_len;
-freq_h = freq_arr(1: t_len_h); % Half of frequency
+freq_arr = 0:f / t_len:f - 1 / t_len;
+freq_h = freq_arr(1:t_len_h); % Half of frequency
 
 %% Calculate total iterations
 totalitr = 1;
 k = 1;
 while true
-    if k*wdt + wtime + lim1 <= lim2
+    if k * wdt + wtime + lim1 <= lim2
         totalitr = totalitr + 1;
         k = k + 1;
     else
@@ -204,7 +205,7 @@ end
 process_timer(handles, lang, 0.001);
 
 %% Plot limits on accel plots
-lim2fix = lim1 + (totalitr-1)*wdt + wtime;
+lim2fix = lim1 + (totalitr - 1) * wdt + wtime;
 axes(handles.plot_ns);
 draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
 draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
@@ -224,30 +225,30 @@ max_shsv = zeros(totalitr, 1);
 
 tic;
 re_accel = cell(6); % Lines of region plotted on acceleration plots
-for itr=1:totalitr
+for itr = 1:totalitr
     
     % Select iteration time limits
-    ilim1 = wdt*(itr-1)+lim1;
-    ilim2 = ilim1+wtime;
+    ilim1 = wdt * (itr - 1) + lim1;
+    ilim2 = ilim1 + wtime;
     
     % Plot window on accelration plots
     if SHOW_REGION_ON_ACCELERATION
         axes(handles.plot_ns);
-        if itr>1
+        if itr > 1
             delete(re_accel{1});
             delete(re_accel{2});
         end
         re_accel{1} = draw_vx_line(ilim1, STYLE_REGION_ACCEL);
         re_accel{2} = draw_vx_line(ilim2, STYLE_REGION_ACCEL);
         axes(handles.plot_ew);
-        if itr>1
+        if itr > 1
             delete(re_accel{3});
             delete(re_accel{4});
         end
         re_accel{3} = draw_vx_line(ilim1, STYLE_REGION_ACCEL);
         re_accel{4} = draw_vx_line(ilim2, STYLE_REGION_ACCEL);
         axes(handles.plot_z);
-        if itr>1
+        if itr > 1
             delete(re_accel{5});
             delete(re_accel{6});
         end
@@ -259,10 +260,10 @@ for itr=1:totalitr
     ns_itr = zeros(t_len, 1);
     ew_itr = zeros(t_len, 1);
     z_itr = zeros(t_len, 1);
-
+    
     j = 1; % Index to store values
-    for i=1:length(ns_t)
-        if ilim2>=ns_t(i) && ns_t(i)>=ilim1
+    for i = 1:length(ns_t)
+        if ilim2 >= ns_t(i) && ns_t(i) >= ilim1
             ns_itr(j) = ns_acc(i);
             ew_itr(j) = ew_acc(i);
             z_itr(j) = z_acc(i);
@@ -281,9 +282,9 @@ for itr=1:totalitr
     z_fft_itr = fft(z_itr);
     
     % Select half of data
-    fft_ns = ns_fft_itr(1: t_len_h);
-    fft_ew = ew_fft_itr(1: t_len_h);
-    fft_z = z_fft_itr(1: t_len_h);
+    fft_ns = ns_fft_itr(1:t_len_h);
+    fft_ew = ew_fft_itr(1:t_len_h);
+    fft_z = z_fft_itr(1:t_len_h);
     
     % Apply smooth
     try
@@ -296,8 +297,8 @@ for itr=1:totalitr
     end
     
     % Calculate SH
-    sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);
-    sh_sv = sh./fft_z;
+    sh = sqrt((fft_ns .^ 2 + fft_ew .^ 2)./2);
+    sh_sv = sh ./ fft_z;
     
     % Delete NaN
     sh_sv(isnan(sh_sv)) = 0;
@@ -306,13 +307,13 @@ for itr=1:totalitr
     sum_shsv = sum_shsv + sh_sv;
     
     % Mean sh/sv
-    mean_shsv = sum_shsv./itr;
+    mean_shsv = sum_shsv ./ itr;
     
     % Calculate maximum frecuency and sh/sv
     svsh_max = 0;
     maxf = 0;
-    for j=1:length(freq_h)
-        if mean_shsv(j) > svsh_max && freq_h(j)>MIN_F_SHSV
+    for j = 1:length(freq_h)
+        if mean_shsv(j) > svsh_max && freq_h(j) > MIN_F_SHSV
             svsh_max = mean_shsv(j);
             maxf = freq_h(j);
         end
@@ -328,7 +329,7 @@ for itr=1:totalitr
     % Plot mean
     axes(handles.plot_avg_shsv); %#ok<*LAXES>
     plot(freq_h, mean_shsv, STYLE_AVERAGE_SHSV);
-    xlim([MIN_F_SHSV MAX_F_SHSV]);
+    xlim([MIN_F_SHSV, MAX_F_SHSV]);
     
     grid on;
     yaxis_linspace(5);
@@ -342,7 +343,7 @@ for itr=1:totalitr
     % Plot MAX F
     axes(handles.plot_maxf);
     plot(1:1:itr, max_freqs(1:itr), STYLE_MAX_F);
-    xlim([1 max(itr, 2)]);
+    xlim([1, max(itr, 2)]);
     yaxis_linspace(5);
     hold off;
     grid on;
@@ -350,18 +351,18 @@ for itr=1:totalitr
     % Plot MAX SH/SV
     axes(handles.plot_maxshsv);
     plot(1:1:itr, max_shsv(1:itr), STYLE_MAX_SHSV);
-    xlim([1 max(itr, 2)]);
+    xlim([1, max(itr, 2)]);
     yaxis_linspace(5);
     hold off;
     grid on;
-
+    
     % Change timer
     process_timer(handles, lang, itr/totalitr);
     pause(0.005);
     
 end
 exec_time = toc;
-    
+
 %% Finishes process
 set(handles.root, 'pointer', 'arrow');
 
@@ -386,8 +387,8 @@ if SHOW_ITR_MAXSHSV
     plot(freq_h, mean_shsv, STYLE_SHSV_F);
     hold on;
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
-    xlim([MIN_F_SHSV MAX_F_SHSV]);
-    ylim([0 max_shsv(end)*1.1]);
+    xlim([MIN_F_SHSV, MAX_F_SHSV]);
+    ylim([0, max_shsv(end) * 1.1]);
     grid on;
     xlabel(lang{31});
     ylabel(lang{32});

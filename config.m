@@ -1,4 +1,5 @@
-%% App configuration
+% CONFIG
+% Stores app configuration.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %

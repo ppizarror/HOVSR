@@ -1,4 +1,5 @@
 function s = get_type_file(filename)
+% GET TYPE FILE
 % Returns file type (NS, EW, Z).
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -23,15 +24,15 @@ constants;
 try
     w = strsplit(filename, '_');
     
-    for i=1:length(w)
+    for i = 1:length(w)
         if strcmp(w(i), 'N')
-            s=1;
+            s = 1;
             return
         elseif strcmp(w(i), 'E')
-            s=2;
+            s = 2;
             return
         elseif strcmp(w(i), 'Z')
-            s=3;
+            s = 3;
             return
         end
     end

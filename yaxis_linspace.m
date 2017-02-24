@@ -1,4 +1,5 @@
 function yaxis_linspace(nticks)
+% YAXIS LINSPACE
 % This function sets yticks as linspace of nticks total points.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.

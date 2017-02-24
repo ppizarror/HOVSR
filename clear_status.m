@@ -21,7 +21,7 @@ function clear_status(handles, lang)
 axes(handles.plot_ns);
 cla reset;
 yaxis_linspace(5);
-set(gca,'fontsize', 10);
+set(gca, 'fontsize', 10);
 grid on;
 axes(handles.plot_ew);
 cla reset;

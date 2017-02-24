@@ -1,6 +1,8 @@
 function new_spectrum = smooth_spectra(spectrum, freq, stype)
 % SMOOTH SPECTRA
 % Set version of the application.
+%
+% PARAMETERS:
 %   fft:    Spectrum to apply smooth
 %   freq:   Frecuencies
 %   stype:  Type of the smooth
@@ -36,43 +38,43 @@ SMOOTH_TYPE = 'loess';
 switch stype
     
     % Konno-Ohmachi - no abs
-    case 1   
-        fc = freq(floor(length(freq)/2) + 1); % Central frequency
+    case 1
+        fc = freq(floor(length(freq)/2)+1); % Central frequency
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, false)';
         new_spectrum = spectrum .* konno;
         
-    % Konno-Ohmachi + abs
-    case 2       
-        fc = freq(floor(length(freq)/2) + 1); % Central frequency
+        % Konno-Ohmachi + abs
+    case 2
+        fc = freq(floor(length(freq)/2)+1); % Central frequency
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, false)';
         new_spectrum = spectrum .* konno;
         
         % Apply abs value
         new_spectrum = abs(new_spectrum);
         
-     % Konno-Ohmachi - no abs + normalize
-    case 3  
-        fc = freq(floor(length(freq)/2) + 1);
+        % Konno-Ohmachi - no abs + normalize
+    case 3
+        fc = freq(floor(length(freq)/2)+1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
         new_spectrum = spectrum .* konno;
         
-    % Konno-Ohmachi + abs + normalize
-    case 4     
-        fc = freq(floor(length(freq)/2) + 1);
+        % Konno-Ohmachi + abs + normalize
+    case 4
+        fc = freq(floor(length(freq)/2)+1);
         konno = konno_ohmachi(freq, fc, KONNO_BANWIDTH, true)';
         new_spectrum = spectrum .* konno;
         
         % Apply abs value
         new_spectrum = abs(new_spectrum);
-    
-    % Uses smooth function - no abs
-    case 5 
+        
+        % Uses smooth function - no abs
+    case 5
         new_spectrum = smooth(freq, spectrum, SMOOTH_SPAN, SMOOTH_TYPE);
-    
-    % Uses smooth function + abs
+        
+        % Uses smooth function + abs
     case 6
         new_spectrum = smooth(freq, abs(spectrum), SMOOTH_SPAN, SMOOTH_TYPE);
-
+        
     otherwise
         error('Smoothing type does not exist.');
 end

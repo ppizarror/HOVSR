@@ -23,7 +23,7 @@ LANG_AVAIABLE_LANGUAGES = 2; % Español, English
 LANG_ENTRIES = 70; % Total language entries on cell structure
 
 %% Check if langid is valid
-if ~ (1 <= langid && langid <= LANG_AVAIABLE_LANGUAGES)
+if ~(1 <= langid && langid <= LANG_AVAIABLE_LANGUAGES)
     error('Invalid langid');
 end
 

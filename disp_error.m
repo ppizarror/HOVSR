@@ -1,4 +1,5 @@
 function disp_error(handles, msgid, titleid, lang)
+% DISP ERROR
 % This function display an error, deletes de status and set pointer to
 % arrow.
 %
@@ -32,6 +33,6 @@ errordlg(lang{msgid}, lang{titleid});
 if APP_SOUNDS
     beep;
 end
-    
+
 end
 
