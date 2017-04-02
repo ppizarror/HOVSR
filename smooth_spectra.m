@@ -74,6 +74,10 @@ switch stype
     % Uses smooth function + abs
     case 6
         new_spectrum = smooth(freq, abs(spectrum), SMOOTH_SPAN, SMOOTH_TYPE);
+		
+	% Mean 5-point
+	case 7
+		new_spectrum = smooth(abs(spectrum));
         
     otherwise
         error('Smoothing type does not exist.');

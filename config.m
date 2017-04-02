@@ -22,7 +22,7 @@ APP_SOUNDS = true;
 LANGUAGE = 1; % 1: English, 2: Spanish
 
 %% Smooth type
-SMOOTH_TYPE = 6;
+SMOOTH_TYPE = 7;
 
 %% Plot configuration
 SHOW_MAX_F_ON_AVERAGE_SHSV = true; % Show maximum f on AVERAGE_SHSV
