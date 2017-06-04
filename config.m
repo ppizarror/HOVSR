@@ -37,7 +37,7 @@ STYLE_REGION_ACCEL_FIX = 'k';
 STYLE_SHSV_F = 'k-';
 STYLE_SHSV_MAXF = 'r--';
 
-% ylim([SHSV_YLIM_MIN_CF*min(shsv) SHSV_YLIM_MAX_CF*max(shsv)]); 
+% ylim([SHSV_YLIM_MIN_CF*min(shsv) SHSV_YLIM_MAX_CF*max(shsv)]);
 SHSV_YLIM_MIN_CF = 0;
 SHSV_YLIM_MAX_CF = 1.10;
 
