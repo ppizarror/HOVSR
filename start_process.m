@@ -197,7 +197,7 @@ freq_h = freq_arr(1:t_len_h); % Half of frequency
 totalitr = 1;
 k = 1;
 while true
-    if k * wdt + wtime + lim1 <= lim2
+    if k * wdt +wtime + lim1 <= lim2
         totalitr = totalitr + 1;
         k = k + 1;
     else
@@ -300,7 +300,7 @@ for itr = 1:totalitr
     end
     
     % Calculate SH
-    sh = sqrt((fft_ns .^ 2 + fft_ew .^ 2)./2);
+    sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);
     sh_sv = sh ./ fft_z;
     
     % Delete NaN
@@ -405,7 +405,7 @@ if SHOW_ITR_MAXSHSV
     hold on;
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
     xlim([MIN_F_SHSV, MAX_F_SHSV]);
-    ylim([min_shsv(end) * SHSV_YLIM_MIN_CF, max_shsv(end) * SHSV_YLIM_MAX_CF ]);
+    ylim([min_shsv(end) * SHSV_YLIM_MIN_CF, max_shsv(end) * SHSV_YLIM_MAX_CF]);
     grid on;
     xlabel(lang{31});
     ylabel(lang{32});
