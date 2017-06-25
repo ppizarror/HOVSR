@@ -126,15 +126,16 @@ grid on;
 
 %% Pick FFT region + windows
 fig_obj = figure('Name', lang{7}, 'NumberTitle', 'off');
-plot(ns_t, ns_acc./G_VALUE, 'k');
+plot(ns_t, ns_acc./G_VALUE, 'k', 'DisplayName', 'N-S');
 hold on;
-plot(ns_t, ew_acc./G_VALUE, 'r');
-plot(ns_t, z_acc./G_VALUE, 'b');
+plot(ns_t, ew_acc./G_VALUE, 'r', 'DisplayName', 'E-W');
+plot(ns_t, z_acc./G_VALUE, 'b', 'DisplayName', 'Z');
 alpha(.7);
 xaxis_linspace(10);
 xlim([0, max(ns_t)]);
 xlabel(lang{17});
 ylabel(lang{18});
+legend('show');
 grid on;
 movegui(fig_obj, 'center');
 try

@@ -52,8 +52,8 @@ list{5, 2} = 'Gráficos de iteraciones';
 list{6, 1} = 'Processing (%.1f%%)';
 list{6, 2} = 'Procesando (%.1f%%)';
 
-list{7, 1} = 'Select two points to create several windows (N-S)';
-list{7, 2} = 'Seleccione dos puntos para crear las ventanas (N-S)';
+list{7, 1} = 'Select two points to create several windows';
+list{7, 2} = 'Seleccione dos puntos para crear las ventanas';
 
 list{8, 1} = 'Acceleration file (*.txt)';
 list{8, 2} = 'Archivo de aceleración (*.txt)';
