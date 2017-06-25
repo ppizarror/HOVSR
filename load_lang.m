@@ -59,10 +59,10 @@ list{8, 1} = 'Acceleration file (*.txt)';
 list{8, 2} = 'Archivo de aceleración (*.txt)';
 
 list{9, 1} = 'Please select a file';
-list{9, 2} = 'Porfavor seleccione un archivo';
+list{9, 2} = 'Por favor seleccione un archivo';
 
 list{10, 1} = 'Please check that N-S (_N), E-W (_E) y Z (_Z) files exist in the same folder.';
-list{10, 2} = 'Porfavor revise que los archivos N-S (_N), E-W (_E) y Z (_Z) existan en la misma carpeta.';
+list{10, 2} = 'Por favor revise que los archivos N-S (_N), E-W (_E) y Z (_Z) existan en la misma carpeta.';
 
 list{11, 1} = 'Error';
 list{11, 2} = 'Error';
