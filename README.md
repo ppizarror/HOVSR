@@ -1,4 +1,7 @@
 # HOVSR
+[![@ppizarror](http://ppizarror.com/resources/images/author.svg)](http://ppizarror.com)
+[![Licencia GPL](http://ppizarror.com/resources/images/licensegpl2.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+
 Matlab application to find main frecuency of groud from earthquake acceleration data using Nakamura method.
 
 <p align="center">
