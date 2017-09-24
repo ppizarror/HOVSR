@@ -10,7 +10,7 @@
 </div><br />
 
 <p align="center">
-	<img src="http://ppizarror.com/resources/images/hovsr/hovsr.PNG" width="70%" >
+	<img src="http://ppizarror.com/resources/images/hovsr/hovsr.PNG" width="60%" >
 </p>
 
 ## License
