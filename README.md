@@ -1,16 +1,20 @@
-# HOVSR
-[![@ppizarror](http://ppizarror.com/resources/images/author.svg)](http://ppizarror.com)
-[![GPL License](http://ppizarror.com/resources/images/licensegpl2.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-
-Matlab application to find main frecuency of groud from earthquake acceleration data using Nakamura method.
+<h1 align="center">
+  <a href="http://ppizarror.com/HOVSR/" title="HOVSR">
+    <img alt="HOVSR" src="http://ppizarror.com/resources/other/matlab.png" width="200px" height="200px" />
+  </a>
+  <br /><br />
+  HOVSR</h1>
+<p align="center">Matlab application to find main frecuency of groud from earthquake acceleration data using Nakamura method</p>
+<div align="center"><a href="http://ppizarror.com"><img alt="@ppizarror" src="http://ppizarror.com/badges/author.svg" /></a>
+<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><img alt="GPL V2.0" src="http://ppizarror.com/badges/licensegpl2.svg" /></a>
+</div><br />
 
 <p align="center">
-<img src="http://ppizarror.com/resources/images/hovsr/hovsr.PNG" width="70%" >
+	<img src="http://ppizarror.com/resources/images/hovsr/hovsr.PNG" width="70%" >
 </p>
 
 ## License
-This project is licensed under GPLv2 (GNU General Public License, version 2) [https://www.gnu.org/licenses/gpl-2.0.html].
+This project is licensed under GPLv2 [https://www.gnu.org/licenses/gpl-2.0.html]
 
 ## Author
-<a href="http://ppizarror.com">Pablo Pizarro R.</a> | 2017.<br>
-Acknowledgments to Felipe Ochoa.
+<a href="http://ppizarror.com" title="ppizarror">Pablo Pizarro R.</a> | 2017

@@ -1,0 +1,37 @@
+{
+    "PROJECT": {
+        "NAME": "HOVSR",
+        "ICON": {
+            "IMAGE": "http://ppizarror.com/resources/other/matlab.png",
+            "ALT": "HOVSR",
+            "WIDTH": 200,
+            "HEIGHT": 200
+        },
+        "URL": "http://ppizarror.com/HOVSR/",
+        "URL_TITLE": "HOVSR"
+    },
+    "AUTHOR": {
+        "NAME": "Pablo Pizarro R.",
+        "URL": "http://ppizarror.com",
+        "ALT": "ppizarror",
+        "DATE": "2017",
+        "SECTION": {
+            "TITLE": "Author",
+            "SHOW": true
+        }
+    },
+    "DESCRIPTION": "Matlab application to find main frecuency of groud from earthquake acceleration data using Nakamura method",
+    "BADGES": {
+        "0": {
+            "IMAGE": "http://ppizarror.com/badges/author.svg",
+            "HREF": "http://ppizarror.com",
+            "ALT": "@ppizarror"
+        },
+        "1": {
+            "IMAGE": "http://ppizarror.com/badges/licensegpl2.svg",
+            "HREF": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+            "ALT": "GPL V2.0"
+        }
+    },
+    "CONTENT": "readme.content.md"
+}
