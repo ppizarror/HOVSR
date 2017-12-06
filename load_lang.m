@@ -220,11 +220,11 @@ list{61, 2} = 'Ocurrió un error mientras se suavizaba el espectro.';
 list{62, 1} = 'Window width (s)';
 list{62, 2} = 'Tamaño ventana (s)';
 
-list{63, 1} = 'Enter window width (s)';
-list{63, 2} = 'Ingrese el tamaño de la ventana (s)';
+list{63, 1} = 'Enter window width, max: %.2f (s)';
+list{63, 2} = 'Ingrese el tamaño de la ventana, máximo: %.2f (s)';
 
-list{64, 1} = 'Bad STRANSFORM_TYPE config value';
-list{64, 2} = 'Error en configuración STRANSFORM_TYPE no conocida';
+list{64, 1} = 'Bad STRANSFORM_TYPE config value.';
+list{64, 2} = 'Error en configuración STRANSFORM_TYPE no conocida.';
 
 list{65, 1} = 'Average and standard deviation';
 list{65, 2} = 'Promedio y desviación estándar';
@@ -232,8 +232,8 @@ list{65, 2} = 'Promedio y desviación estándar';
 list{66, 1} = 'Median and percentile (min-10-20-40-60-80-90-max)';
 list{66, 2} = 'Mediana y percentiles (min-10-20-40-60-80-90-max)';
 
-list{67, 1} = '';
-list{67, 2} = '';
+list{67, 1} = 'Window width cant be greater than timeseries width.';
+list{67, 2} = 'El tamaño de la ventana no puede superar el máximo del registro.';
 
 list{68, 1} = '';
 list{68, 2} = '';

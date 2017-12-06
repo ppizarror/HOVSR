@@ -19,7 +19,7 @@
 
 %% App config
 APP_SOUNDS = true;
-LANGUAGE = 2; % 1: English, 2: Spanish
+LANGUAGE = 1; % 1: English, 2: Español
 
 %% Transform/Smooth numerical method type
 % (1) Stockwell Transform (S-transform), window with all data

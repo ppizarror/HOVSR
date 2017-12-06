@@ -125,7 +125,8 @@ if istrfm(NUM_METHOD)
     [m, ~] = size(M);
     
     % Request window time
-    data = inputdlg({lang{63}}, lang{62}, [1, 50], {num2str(min(STRANSFORM_DEFAULT_WINDOW_WIDTH, round(max(ns_t))))});
+    data = inputdlg({sprintf(lang{63}, max(ns_t))}, lang{62}, [1, 50], ...
+        {num2str(min(STRANSFORM_DEFAULT_WINDOW_WIDTH, round(max(ns_t))))});
     try
         T = data{1};
     catch
@@ -136,6 +137,10 @@ if istrfm(NUM_METHOD)
         T = str2double(T);
     catch
         disp_error(handles, 22, 11, lang);
+        return;
+    end
+    if T > max(ns_t)
+        disp_error(handles, 67, 11, lang);
         return;
     end
     fi = ceil(STRANSFORM_F_MIN*T);
@@ -450,7 +455,7 @@ for itr = 1:totalitr
     plot(1:1:itr, max_freqs(1:itr), STYLE_MAX_F);
     xlim([1, max(itr, 2)]);
     lims = get(gca, 'ylim');
-    ylim([0, lims(2)]);
+    ylim([0, lims(2) * 1.2]);
     yaxis_linspace(5);
     hold off;
     grid on;

@@ -20,7 +20,7 @@
             "SHOW": true
         }
     },
-    "DESCRIPTION": "Matlab application that finds main frecuency from seismic timeseries acceleration data using H/V Stockwell Transform/Nakamura method",
+    "DESCRIPTION": "Matlab application that finds main frecuency from seismic timeseries acceleration data using SH/SV Stockwell Transform/Nakamura method",
     "BADGES": {
         "0": {
             "IMAGE": "http://ppizarror.com/badges/author.svg",
