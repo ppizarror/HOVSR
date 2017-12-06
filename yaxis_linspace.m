@@ -22,4 +22,3 @@ lims = get(gca, 'ylim');
 yticks(round(linspace(lims(1), lims(2), nticks), 2));
 
 end
-

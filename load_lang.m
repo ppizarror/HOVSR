@@ -217,20 +217,20 @@ list{60, 2} = 'Debes elegir 3 archivos.';
 list{61, 1} = 'An error has occurred while smoothing the spectrum.';
 list{61, 2} = 'Ocurrió un error mientras se suavizaba el espectro.';
 
-list{62, 1} = '';
-list{62, 2} = '';
+list{62, 1} = 'Window width (s)';
+list{62, 2} = 'Tamaño ventana (s)';
 
-list{63, 1} = '';
-list{63, 2} = '';
+list{63, 1} = 'Enter window width (s)';
+list{63, 2} = 'Ingrese el tamaño de la ventana (s)';
 
-list{64, 1} = '';
-list{64, 2} = '';
+list{64, 1} = 'Bad STRANSFORM_TYPE config value';
+list{64, 2} = 'Error en configuración STRANSFORM_TYPE no conocida';
 
-list{65, 1} = '';
-list{65, 2} = '';
+list{65, 1} = 'Average and standard deviation';
+list{65, 2} = 'Promedio y desviación estándar';
 
-list{66, 1} = '';
-list{66, 2} = '';
+list{66, 1} = 'Median and percentile (min-10-20-40-60-80-90-max)';
+list{66, 2} = 'Mediana y percentiles (min-10-20-40-60-80-90-max)';
 
 list{67, 1} = '';
 list{67, 2} = '';
@@ -252,4 +252,3 @@ for j = 1:LANG_ENTRIES
 end
 
 end
-

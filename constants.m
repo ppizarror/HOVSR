@@ -17,14 +17,13 @@
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-% Numerical constants
+%% Numerical constants
 G_VALUE = 980; % g, cm/s^2
 
-% Window constants (default parameters)
+%% Window default parameters
 WINDOW_MOVE = 1;
 WINDOW_SIZE = 30;
 
-% SH/SV CONSTANTS
-MIN_F_SHSV = 0.01;
-MAX_F_SHSV = 10;
-
+%% STRANSFORM constants
+STRANSFORM_ALL = 1;
+STRANSFORM_MED = 2;

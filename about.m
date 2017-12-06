@@ -26,4 +26,3 @@ msgbox({'HOVSR'; lang{42}; ''; lang{40}; lang{41}; lang{44}; ''; ...
     sprintf(lang{45}, VERSION); lang{43}}, lang{39}, 'help');
 
 end
-

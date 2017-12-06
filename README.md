@@ -4,7 +4,7 @@
   </a>
   <br /><br />
   HOVSR</h1>
-<p align="center">Matlab application to find main frecuency of groud from earthquake acceleration data using Nakamura method</p>
+<p align="center">Matlab application that finds main frecuency from seismic timeseries acceleration data using H/V Stockwell Transform/Nakamura method</p>
 <div align="center"><a href="http://ppizarror.com"><img alt="@ppizarror" src="http://ppizarror.com/badges/author.svg" /></a>
 <a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.html"><img alt="GPL V2.0" src="http://ppizarror.com/badges/licensegpl2.svg" /></a>
 </div><br />

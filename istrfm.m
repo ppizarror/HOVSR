@@ -1,5 +1,6 @@
-function w = tukeywin(n, r)
-%TUKEYWIN Tukey window.
+function b = istrfm(method)
+% IS S-TRANSFORM
+% Check if numerical method is S-transform.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
 %
@@ -17,26 +18,11 @@ function w = tukeywin(n, r)
 % along with this program; if not, write to the Free Software
 % Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-error(nargchk(1, 2, nargin, 'struct')); %#ok<NCHKN>
-
-% Default value for R parameter.
-if nargin < 2 || isempty(r)
-    r = 0.500;
+constants;
+if method == STRANSFORM_ALL || method == STRANSFORM_MED
+    b = true;
+else
+    b = false;
 end
 
-[n, w, trivialwin] = check_order(n);
-if trivialwin, return, end
-
-if r <= 0
-    w = ones(n, 1);
-elseif r >= 1
-    w = hann(n);
-else
-    t = linspace(0, 1, n)';
-    % Defines period of the taper as 1/2 period of a sine wave.
-    per = r / 2;
-    tl = floor(per*(n - 1)) + 1;
-    th = n - tl + 1;
-    % Window is defined in three sections: taper, constant, taper
-    w = [((1 + cos(pi/per*(t(1:tl) - per))) / 2); ones(th-tl-1, 1); ((1 + cos(pi/per*(t(th:end) - 1 + per))) / 2)];
 end

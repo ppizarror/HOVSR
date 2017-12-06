@@ -22,4 +22,3 @@ function manual(lang)
 msgbox({lang{53}; lang{54}; lang{55}; lang{56}; lang{57}}, lang{58}, 'help');
 
 end
-

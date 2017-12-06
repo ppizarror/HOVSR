@@ -28,4 +28,3 @@ if normalize
 end
 
 end
-

@@ -21,4 +21,3 @@ function obj = draw_vx_line(x, style)
 obj = plot([x, x], get(gca, 'ylim'), style);
 
 end
-

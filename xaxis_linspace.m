@@ -22,4 +22,3 @@ lims = get(gca, 'xlim');
 xticks(round(linspace(lims(1), lims(2), nticks), 1));
 
 end
-

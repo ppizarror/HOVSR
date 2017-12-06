@@ -1,4 +1,5 @@
 function clear_status(handles, lang)
+% CLEAR STATUS
 % This function clear status of app.
 %
 % Author: Pablo Pizarro @ppizarror.com, 2017.
@@ -66,5 +67,6 @@ setappdata(handles.root, 'results', false);
 setappdata(handles.root, 'results_shsv', []);
 setappdata(handles.root, 'results_f', []);
 
+% Set window pointer
+set(handles.root, 'pointer', 'arrow');
 end
-
