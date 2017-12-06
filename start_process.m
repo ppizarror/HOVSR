@@ -151,6 +151,10 @@ if istrfm(NUM_METHOD)
     % Create frecuency array
     freq_h = STRANSFORM_F_MIN:1 / T:STRANSFORM_F_MAX;
     t_len_h = length(freq_h);
+    
+    % Plot time limits
+    lim1 = 0;
+    lim2fix = max(1:NUM_METHOD:T*f*totalitr) / f;
 else
     % Baseline correction
     ns_acc = detrend(ns_acc, 0);
@@ -240,19 +244,19 @@ else
         end
     end
     process_timer(handles, lang, 0.001);
-    
-    % Plot limits on accel plots
     lim2fix = lim1 + (totalitr - 1) * wdt + wtime;
-    axes(handles.plot_ns);
-    draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
-    draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
-    axes(handles.plot_ew);
-    draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
-    draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
-    axes(handles.plot_z);
-    draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
-    draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
 end
+
+% Plot limits on accel plots
+axes(handles.plot_ns);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
+axes(handles.plot_ew);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
+axes(handles.plot_z);
+draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
+draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
 
 %% Sum of sh/sv to calculate mean
 sum_shsv = zeros(t_len_h, 1);
