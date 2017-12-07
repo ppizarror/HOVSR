@@ -47,6 +47,7 @@ STRANSFORM_DEFAULT_WINDOW_WIDTH = 30;
 DISPLAY_VAR_PERCENTILS_STRANSFORM = false; % Show variance, percentile on stransform plots
 MAX_F_SHSV = 10; % Max frequency on result plots
 MIN_F_SHSV = 0.1; % Min frequency on result plots
+PLOT_X_VAR = 'PERIOD'; % FREQ, PERIOD
 SHOW_MAX_F_ON_AVERAGE_SHSV = true; % Show maximum f on AVERAGE_SHSV
 SHOW_REGION_ON_ACCELERATION = true; % Show iteration limits on timeseries plots
 SHOW_RESULTS_FSHSV_PLOT = true; % Show text with results of f-sh/sv

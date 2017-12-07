@@ -235,15 +235,44 @@ list{66, 2} = 'Mediana y percentiles (min-10-20-40-60-80-90-max)';
 list{67, 1} = 'Window width cant be greater than timeseries width.';
 list{67, 2} = 'El tamaño de la ventana no puede superar el máximo del registro.';
 
-list{68, 1} = '';
-list{68, 2} = '';
+list{68, 1} = 'Bad PLOT_X_VAR config value.';
+list{68, 2} = 'Error en configuración PLOT_X_VAR no conocida.';
 
-list{69, 1} = '';
-list{69, 2} = '';
+list{69, 1} = 'Period (s)';
+list{69, 2} = 'Período (s)';
 
-list{70, 1} = '';
-list{70, 2} = '';
+list{70, 1} = 'Maximum period: %.3f [s]';
+list{70, 2} = 'Período máximo: %.3f [s]';
 
+list{71, 1} = '';
+list{71, 2} = '';
+
+list{72, 1} = '';
+list{72, 2} = '';
+
+list{73, 1} = '';
+list{73, 2} = '';
+
+list{74, 1} = '';
+list{74, 2} = '';
+
+list{75, 1} = '';
+list{75, 2} = '';
+
+list{76, 1} = '';
+list{76, 2} = '';
+
+list{77, 1} = '';
+list{77, 2} = '';
+
+list{78, 1} = '';
+list{78, 2} = '';
+
+list{79, 1} = '';
+list{79, 2} = '';
+
+list{80, 1} = '';
+list{80, 2} = '';
 
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);

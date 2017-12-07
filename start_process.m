@@ -489,6 +489,19 @@ setappdata(handles.root, 'results_f', freq_h);
 
 %% Show final results
 if SHOW_ITR_MAXSHSV
+    if strcmp(PLOT_X_VAR, 'FREQ')
+        strtextmsg = 'Hz | Amp=';
+        strxlabel = lang{31};
+    elseif strcmp(PLOT_X_VAR, 'PERIOD')
+        freq_h = (freq_h.^-1) .* (2 * pi);
+        [~, n2] = max(mean_shsv);
+        max_freqs(end) = freq_h(n2);
+        strtextmsg = 's | Amp=';
+        strxlabel = lang{69};
+    else
+        disp_error(handles, 68, 11, lang);
+        return;
+    end
     figurename = strrep(file{1}, '_E', '');
     figurename = strrep(figurename, '_Z', '');
     figurename = strrep(figurename, '_W', '');
@@ -514,24 +527,30 @@ if SHOW_ITR_MAXSHSV
     end
     plot(freq_h, mean_shsv, STYLE_SHSV_F);
     grid on;
-    set(gca, 'xscale', 'log', 'xlim', [MIN_F_SHSV, MAX_F_SHSV], 'ylim', ...
-        [SHSV_YLIM_MIN_CF, SHSV_YLIM_MAX_CF], 'box', 'on', ...
-        'XTickLabel', {'0.1', '0.2', '0.3', '0.5', '0.7', '1', '2', '3', '4', '5', '6', '7', '8', '10'}, ...
-        'XTick', [0.1, 0.2, 0.3, 0.5, 0.7, 1, 2, 3, 4, 5, 6, 7, 8, 10]);
+    set(gca, 'xscale', 'log', 'xlim', [min(freq_h), max(freq_h)], 'ylim', ...
+        [SHSV_YLIM_MIN_CF, SHSV_YLIM_MAX_CF], 'box', 'on');
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
     [~, n2] = max(mean_shsv);
     if SHOW_RESULTS_FSHSV_PLOT
-        text(freq_h(n2), 9, ['Fo=', num2str(freq_h(n2)), 'Hz | Amp=', num2str(round(max(mean_shsv)*100)/100)], ...
+        text(max_freqs(end), 9, ['Fo=', num2str(freq_h(n2)), strtextmsg, num2str(round(max(mean_shsv)*100)/100)], ...
             'VerticalAlignment', 'middle', 'HorizontalAlignment', 'center', 'FontSize', 9, 'EdgeColor', 'k', ...
             'BackgroundColor', [1, 1, 1]);
     end
-    xlabel(lang{31});
+    xlabel(strxlabel);
     ylabel(lang{32});
 end
 
 %% Message to user
 if SHOW_ITR_DIALOG
-    resultmsg = msgbox({sprintf(lang{25}, max_freqs(end)); sprintf(lang{26}, ...
+    if strcmp(PLOT_X_VAR, 'FREQ')
+        msgmaxfreqs = lang{25};
+    elseif strcmp(PLOT_X_VAR, 'PERIOD')
+        msgmaxfreqs = lang{70};
+    else
+        disp_error(handles, 68, 11, lang);
+        return;
+    end
+    resultmsg = msgbox({sprintf(msgmaxfreqs, max_freqs(end)); sprintf(lang{26}, ...
         max_shsv(end)); ''; sprintf(lang{27}, totalitr); sprintf(lang{28}, exec_time)}, ...
         lang{29}, 'help');
     setappdata(handles.root, 'resultmsg', resultmsg);
