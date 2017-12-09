@@ -1,7 +1,8 @@
-function hv = funhv(Mv, Mn, Me, fi, ff)
+function [hv, hve, hvn] = funhv(Mv, Mn, Me, fi, ff)
 % HV FUNCTION
 % Calculates hv from V (Vertical), N (North-South) and E (East-West)
 % acceleration timeseries.
+% Also returns hve = E/V and hvn = N/V.
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -24,10 +25,15 @@ stE = st(Me', fi, ff);
 
 [m, n] = size(stV);
 hv = zeros(m, n);
+hve = zeros(m, n);
+hvn = zeros(m, n);
 
+% Calculate H/V
 for j = 1:n
     for i = 1:m
         hv(i, j) = sqrt((abs(stN(i, j))^2 + abs(stE(i, j)^2))/2) / abs(stV(i, j));
+        hve(i, j) = abs(stE(i, j))/ abs(stV(i, j));
+        hvn(i, j) = abs(stN(i, j))/ abs(stV(i, j));
     end
 end
 

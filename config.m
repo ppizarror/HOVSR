@@ -24,7 +24,7 @@ LANGUAGE = 1; % 1: English, 2: Español
 %% Transform/Smooth numerical method type
 % (1) Stockwell Transform (S-transform), window with all data
 % (2) Stockwell Transform (S-transform), window with med point data
-% (3) FFT + Konno-Ohmachi with no abs value
+% (3) FFT + Konno-Ohmachi with no abs value [bugs]
 % (4) FFT + Konno-Ohmachi with abs value
 % (5) FFT + Konno-Ohmachi with no abs value + normalize
 % (6) FFT + Konno-Ohmachi with abs value + normalize
@@ -33,8 +33,8 @@ LANGUAGE = 1; % 1: English, 2: Español
 % (9) FFT + Mean 5 point
 NUM_METHOD = 2;
 
-%% S-Transform MEAN/MEDIAN
-STRANSFORM_TYPE = 'MEDIAN';
+%% MEAN/MEDIAN hv calculation
+HV_CALC_METHOD = 'MEDIAN';
 
 %% S-Transform min/max frequencies
 STRANSFORM_F_MAX = 10;
@@ -44,7 +44,7 @@ STRANSFORM_F_MIN = 0.1;
 STRANSFORM_DEFAULT_WINDOW_WIDTH = 30;
 
 %% Plot configuration
-DISPLAY_VAR_PERCENTILS_STRANSFORM = false; % Show variance, percentile on stransform plots
+DISPLAY_VAR_PERCENTILS_RESULTS = true; % Show variance, percentile on plots
 MAX_F_SHSV = 10; % Max frequency on result plots
 MIN_F_SHSV = 0.1; % Min frequency on result plots
 PLOT_X_VAR = 'PERIOD'; % FREQ, PERIOD

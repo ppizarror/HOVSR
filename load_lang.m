@@ -20,7 +20,7 @@ function langlist = load_lang(langid)
 
 %% Constants
 LANG_AVAIABLE_LANGUAGES = 2; % Español, English
-LANG_ENTRIES = 70; % Total language entries on cell structure
+LANG_ENTRIES = 100; % Total language entries on cell structure
 
 %% Check if langid is valid
 if ~(1 <= langid && langid <= LANG_AVAIABLE_LANGUAGES)
@@ -223,8 +223,8 @@ list{62, 2} = 'Tamaño ventana (s)';
 list{63, 1} = 'Enter window width, max: %.2f (s)';
 list{63, 2} = 'Ingrese el tamaño de la ventana, máximo: %.2f (s)';
 
-list{64, 1} = 'Bad STRANSFORM_TYPE config value.';
-list{64, 2} = 'Error en configuración STRANSFORM_TYPE no conocida.';
+list{64, 1} = 'Bad HV_CALC_METHOD config value.';
+list{64, 2} = 'Error en configuración HV_CALC_METHOD no conocida.';
 
 list{65, 1} = 'Average and standard deviation';
 list{65, 2} = 'Promedio y desviación estándar';
@@ -244,14 +244,14 @@ list{69, 2} = 'Período (s)';
 list{70, 1} = 'Maximum period: %.3f [s]';
 list{70, 2} = 'Período máximo: %.3f [s]';
 
-list{71, 1} = '';
-list{71, 2} = '';
+list{71, 1} = 'SH/SV v/s T';
+list{71, 2} = 'SH/SV v/s T';
 
-list{72, 1} = '';
-list{72, 2} = '';
+list{72, 1} = 'Inferior limit';
+list{72, 2} = 'Límite inferior';
 
-list{73, 1} = '';
-list{73, 2} = '';
+list{73, 1} = 'An error has occurred while obtaining period plot result.';
+list{73, 2} = 'Ocurrió un error al obtener el gráfico de período.';
 
 list{74, 1} = '';
 list{74, 2} = '';
@@ -273,6 +273,66 @@ list{79, 2} = '';
 
 list{80, 1} = '';
 list{80, 2} = '';
+
+list{81, 1} = '';
+list{81, 2} = '';
+
+list{82, 1} = '';
+list{82, 2} = '';
+
+list{83, 1} = '';
+list{83, 2} = '';
+
+list{84, 1} = '';
+list{84, 2} = '';
+
+list{85, 1} = '';
+list{85, 2} = '';
+
+list{86, 1} = '';
+list{86, 2} = '';
+
+list{87, 1} = '';
+list{87, 2} = '';
+
+list{88, 1} = '';
+list{88, 2} = '';
+
+list{89, 1} = '';
+list{89, 2} = '';
+
+list{90, 1} = '';
+list{90, 2} = '';
+
+list{91, 1} = '';
+list{91, 2} = '';
+
+list{92, 1} = '';
+list{92, 2} = '';
+
+list{93, 1} = '';
+list{93, 2} = '';
+
+list{94, 1} = '';
+list{94, 2} = '';
+
+list{95, 1} = '';
+list{95, 2} = '';
+
+list{96, 1} = '';
+list{96, 2} = '';
+
+list{97, 1} = '';
+list{97, 2} = '';
+
+list{98, 1} = '';
+list{98, 2} = '';
+
+list{99, 1} = '';
+list{99, 2} = '';
+
+list{100, 1} = '';
+list{100, 2} = '';
 
 %% Create list of choise
 langlist = cell(LANG_ENTRIES, 1);

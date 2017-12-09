@@ -183,7 +183,7 @@ else
     try
         data_region = ginput(1);
         lim1 = data_region(1, 1);
-        plot([lim1, lim1], get(gca, 'ylim'), 'k--', 'displayname', 'Límite inferior');
+        plot([lim1, lim1], get(gca, 'ylim'), 'k--', 'displayname', lang{72});
         data_region = ginput(1);
         lim2 = data_region(1, 1);
         limits = [lim1, lim2];
@@ -264,7 +264,6 @@ draw_vx_line(lim1, STYLE_REGION_ACCEL_FIX);
 draw_vx_line(lim2fix, STYLE_REGION_ACCEL_FIX);
 
 %% Sum of sh/sv to calculate mean
-sum_shsv = zeros(t_len_h, 1);
 max_freqs = zeros(totalitr, 1);
 max_shsv = zeros(totalitr, 1);
 min_shsv = zeros(totalitr, 1);
@@ -314,103 +313,55 @@ for itr = 1:totalitr
         Mv = detrend(M(int, 1));
         Mn = detrend(M(int, 2));
         Me = detrend(M(int, 3));
-        hvw = funhv(Mv, Mn, Me, fi, ff);
-        
+        [hvw, ~, ~] = funhv(Mv, Mn, Me, fi, ff);
         if itr == 1
             hv = zeros(size(hvw));
         end
         
         % Geometric mean
         hv = hv + log(hvw);
-        
         mean_shsv = exp(hv'./fix(m/(f * T)));
-        [~, n_hv] = size(mean_shsv);
-        
-        % Get sh/sv mean or median
-        if strcmp(STRANSFORM_TYPE, 'MEAN')
-            pp = zeros(n_hv, 3);
-            for j = 1:n_hv
-                vt = mean_shsv(:, j);
-                pp(j, 1) = mean(vt);
-                pp(j, 2) = std(vt(vt > pp(j, 1)));
-                pp(j, 3) = std(vt(vt < pp(j, 1)));
-            end
-            mean_shsv = pp(:, 1);
-        elseif strcmp(STRANSFORM_TYPE, 'MEDIAN')
-            Q = zeros(n_hv, 9);
-            for j = 1:n_hv
-                vt = mean_shsv(:, j);
-                Q(j, 1) = prctile(vt, 10);
-                Q(j, 2) = prctile(vt, 20);
-                Q(j, 3) = prctile(vt, 40);
-                Q(j, 4) = prctile(vt, 50);
-                Q(j, 5) = prctile(vt, 60);
-                Q(j, 6) = prctile(vt, 80);
-                Q(j, 7) = prctile(vt, 90);
-                Q(j, 8) = prctile(vt, 0);
-                Q(j, 9) = prctile(vt, 100);
-            end
-            mean_shsv = Q(:, 4);
-        else
-            disp_error(handles, 64, 11, lang);
-            return;
-        end
     else
-        % Create new arrays
-        ns_itr = zeros(t_len, 1);
-        ew_itr = zeros(t_len, 1);
-        z_itr = zeros(t_len, 1);
-        
-        j = 1; % Index to store values
-        for i = 1:length(ns_t)
-            if ilim2 >= ns_t(i) && ns_t(i) >= ilim1
-                ns_itr(j) = ns_acc(i);
-                ew_itr(j) = ew_acc(i);
-                z_itr(j) = z_acc(i);
-                j = j + 1;
-            end
+        % FFT + Smooth
+        [sh_sv, ~, ~] = funakamura(t_len, t_len_h, freq_h, ns_acc, ew_acc, z_acc, tuckey, ns_t, ilim1, ilim2);
+        if itr == 1
+            sum_shsv = zeros(size(sh_sv));
         end
         
-        % Apply tuckey window
-        ns_itr = ns_itr .* tuckey;
-        ew_itr = ew_itr .* tuckey;
-        z_itr = z_itr .* tuckey;
-        
-        % Apply fft
-        ns_fft_itr = fft(ns_itr);
-        ew_fft_itr = fft(ew_itr);
-        z_fft_itr = fft(z_itr);
-        
-        % Select half of data
-        fft_ns = ns_fft_itr(1:t_len_h);
-        fft_ew = ew_fft_itr(1:t_len_h);
-        fft_z = z_fft_itr(1:t_len_h);
-        
-        % Apply smooth
-        fft_ns = smooth_spectra(fft_ns, freq_h, NUM_METHOD);
-        fft_ew = smooth_spectra(fft_ew, freq_h, NUM_METHOD);
-        fft_z = smooth_spectra(fft_z, freq_h, NUM_METHOD);
-        try
-            fft_ns = smooth_spectra(fft_ns, freq_h, NUM_METHOD);
-            fft_ew = smooth_spectra(fft_ew, freq_h, NUM_METHOD);
-            fft_z = smooth_spectra(fft_z, freq_h, NUM_METHOD);
-        catch
-            disp_error(handles, 61, 11, lang);
-            return;
-        end
-        
-        % Calculate SH
-        sh = sqrt((fft_ns.^2 + fft_ew.^2)./2);
-        sh_sv = sh ./ fft_z;
-        
-        % Delete NaN
-        sh_sv(isnan(sh_sv)) = 0;
-        
-        % Add sh/sv to mean
+        % Geometric mean
         sum_shsv = sum_shsv + sh_sv;
-        
-        % Mean sh/sv
-        mean_shsv = sum_shsv ./ itr;
+        mean_shsv = sum_shsv' ./ itr;
+    end
+    
+    % Get sh/sv mean or median
+    [~, n_hv] = size(mean_shsv);
+    if strcmp(HV_CALC_METHOD, 'MEAN')
+        pp = zeros(n_hv, 3);
+        for j = 1:n_hv
+            vt = mean_shsv(:, j);
+            pp(j, 1) = mean(vt);
+            pp(j, 2) = std(vt(vt > pp(j, 1)));
+            pp(j, 3) = std(vt(vt < pp(j, 1)));
+        end
+        mean_shsv = pp(:, 1);
+    elseif strcmp(HV_CALC_METHOD, 'MEDIAN')
+        Q = zeros(n_hv, 9);
+        for j = 1:n_hv
+            vt = mean_shsv(:, j);
+            Q(j, 1) = prctile(vt, 10);
+            Q(j, 2) = prctile(vt, 20);
+            Q(j, 3) = prctile(vt, 40);
+            Q(j, 4) = prctile(vt, 50);
+            Q(j, 5) = prctile(vt, 60);
+            Q(j, 6) = prctile(vt, 80);
+            Q(j, 7) = prctile(vt, 90);
+            Q(j, 8) = prctile(vt, 0);
+            Q(j, 9) = prctile(vt, 100);
+        end
+        mean_shsv = Q(:, 4);
+    else
+        disp_error(handles, 64, 11, lang);
+        return;
     end
     
     % Calculate maximum/minimum frecuency and sh/sv
@@ -489,14 +440,44 @@ setappdata(handles.root, 'results_f', freq_h);
 
 %% Show final results
 if SHOW_ITR_MAXSHSV
+    if strcmp(PLOT_X_VAR, 'PERIOD')
+        for i=1:length(freq_h)
+            if freq_h(i) == 0
+                freq_h(i) = 0.001;
+            end
+        end
+        freq_h = (freq_h.^-1);
+        fhqs = [0;0];
+        for i=1:length(freq_h)
+            if freq_h(i) == MIN_F_SHSV
+                fhqs(2) = i;
+            elseif freq_h(i) == MAX_F_SHSV
+                fhqs(1) = i;
+            end
+        end
+        if fhqs(2) == 0
+            disp_error(handles, 68, 11, lang);
+            return;
+        end
+        n_freq_h = zeros(1, fhqs(2) - fhqs(1));
+        n_mean_shsv = zeros(1, fhqs(2) - fhqs(1));
+        for j=1:(fhqs(2) - fhqs(1))
+            n_freq_h(j) = freq_h(fhqs(1)+j);
+            n_mean_shsv(j) = mean_shsv(j+fhqs(1));
+        end
+        freq_h = n_freq_h;
+        max(freq_h)
+        mean_shsv = n_mean_shsv;
+    end
     if strcmp(PLOT_X_VAR, 'FREQ')
         strtextmsg = 'Hz | Amp=';
+        strtextmsg2 = 'Fo=';
         strxlabel = lang{31};
     elseif strcmp(PLOT_X_VAR, 'PERIOD')
-        freq_h = (freq_h.^-1) .* (2 * pi);
         [~, n2] = max(mean_shsv);
         max_freqs(end) = freq_h(n2);
         strtextmsg = 's | Amp=';
+        strtextmsg2 = 'To=';
         strxlabel = lang{69};
     else
         disp_error(handles, 68, 11, lang);
@@ -510,12 +491,12 @@ if SHOW_ITR_MAXSHSV
     movegui(fig_obj, 'center');
     setappdata(handles.root, 'figureid1', fig_obj);
     hold on;
-    if istrfm(NUM_METHOD) && DISPLAY_VAR_PERCENTILS_STRANSFORM
-        if strcmp(STRANSFORM_TYPE, 'MEAN')
+    if DISPLAY_VAR_PERCENTILS_RESULTS && strcmp(PLOT_X_VAR, 'FREQ')
+        if strcmp(HV_CALC_METHOD, 'MEAN')
             fill([freq_h, fliplr(freq_h)], [(pp(:, 1) + pp(:, 2))', fliplr((pp(:, 1) - pp(:, 3))')], ...
                 [0.7937, 0.7937, 0.7937], 'LineStyle', 'none');
             title(lang{65});
-        elseif strcmp(STRANSFORM_TYPE, 'MEDIAN')
+        elseif strcmp(HV_CALC_METHOD, 'MEDIAN')
             fill([freq_h, fliplr(freq_h)], [Q(:, 8)', fliplr(Q(:, 9)')], [0.9365, 0.9365, 0.9365], 'LineStyle', 'none');
             fill([freq_h, fliplr(freq_h)], [Q(:, 7)', fliplr(Q(:, 1)')], [0.8889, 0.8889, 0.8889], 'LineStyle', 'none');
             fill([freq_h, fliplr(freq_h)], [Q(:, 6)', fliplr(Q(:, 2)')], [0.7937, 0.7937, 0.7937], 'LineStyle', 'none');
@@ -523,16 +504,20 @@ if SHOW_ITR_MAXSHSV
             title(lang{30});
         end
     else
-        title(lang{30});
+        if strcmp(PLOT_X_VAR, 'FREQ')
+            title(lang{30});
+        elseif strcmp(PLOT_X_VAR, 'PERIOD')
+            title(lang{71});
+        end
     end
     plot(freq_h, mean_shsv, STYLE_SHSV_F);
     grid on;
-    set(gca, 'xscale', 'log', 'xlim', [min(freq_h), max(freq_h)], 'ylim', ...
+    set(gca, 'xscale', 'log', 'xlim', [MIN_F_SHSV, MAX_F_SHSV], 'ylim', ...
         [SHSV_YLIM_MIN_CF, SHSV_YLIM_MAX_CF], 'box', 'on');
     draw_vx_line(max_freqs(end), STYLE_SHSV_MAXF);
     [~, n2] = max(mean_shsv);
     if SHOW_RESULTS_FSHSV_PLOT
-        text(max_freqs(end), 9, ['Fo=', num2str(freq_h(n2)), strtextmsg, num2str(round(max(mean_shsv)*100)/100)], ...
+        text(max_freqs(end), 9, [strtextmsg2, num2str(freq_h(n2)), strtextmsg, num2str(round(max(mean_shsv)*100)/100)], ...
             'VerticalAlignment', 'middle', 'HorizontalAlignment', 'center', 'FontSize', 9, 'EdgeColor', 'k', ...
             'BackgroundColor', [1, 1, 1]);
     end
