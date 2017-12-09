@@ -24,10 +24,10 @@ LANGUAGE = 1; % 1: English, 2: Español
 %% Transform/Smooth numerical method type
 % (1) Stockwell Transform (S-transform), window with all data
 % (2) Stockwell Transform (S-transform), window with med point data
-% (3) FFT + Konno-Ohmachi with no abs value [bugs]
-% (4) FFT + Konno-Ohmachi with abs value
-% (5) FFT + Konno-Ohmachi with no abs value + normalize
-% (6) FFT + Konno-Ohmachi with abs value + normalize
+% (3) FFT + Konno-Ohmachi with no abs value [bug]
+% (4) FFT + Konno-Ohmachi with abs value [bug]
+% (5) FFT + Konno-Ohmachi with no abs value + normalize [bug]
+% (6) FFT + Konno-Ohmachi with abs value + normalize [bug]
 % (7) FFT + Smooth function with no abs value
 % (8) FFT + Smooth function with abs value
 % (9) FFT + Mean 5 point
