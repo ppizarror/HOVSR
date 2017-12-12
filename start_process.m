@@ -466,7 +466,6 @@ if SHOW_ITR_MAXSHSV
             n_mean_shsv(j) = mean_shsv(j+fhqs(1));
         end
         freq_h = n_freq_h;
-        max(freq_h)
         mean_shsv = n_mean_shsv;
     end
     if strcmp(PLOT_X_VAR, 'FREQ')
