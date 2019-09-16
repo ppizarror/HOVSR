@@ -31,7 +31,7 @@ LANGUAGE = 1; % 1: English, 2: Español
 % (7) FFT + Smooth function with no abs value
 % (8) FFT + Smooth function with abs value
 % (9) FFT + Mean 5 point
-NUM_METHOD = 2;
+NUM_METHOD = 9;
 
 %% MEAN/MEDIAN hv calculation
 HV_CALC_METHOD = 'MEDIAN';
