@@ -1,7 +1,5 @@
 <h1 align="center">
-  <a href="https://ppizarror.com/HOVSR/" title="HOVSR">
-    <img alt="HOVSR" src="https://res.ppizarror.com/other/matlab.png" width="200px" height="200px" />
-  </a>
+  <img alt="HOVSR" src="https://res.ppizarror.com/other/matlab.png" width="200px" height="200px" />
   <br /><br />
   HOVSR</h1>
 <p align="center">Matlab application that finds main frecuency from seismic timeseries acceleration data using SH/SV Stockwell Transform/Nakamura method</p>
