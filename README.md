@@ -15,6 +15,6 @@
 
 This project is licensed under GPLv2 [https://www.gnu.org/licenses/gpl-2.0.html]
 
-
 ## Author
-<a href="https://ppizarror.com" title="ppizarror">Pablo Pizarro R.</a> | 2017 - 2019
+
+[Pablo Pizarro R.](https://ppizarror.com) | 2017 - 2019
