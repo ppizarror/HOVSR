@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="https://res.ppizarror.com/images/hovsr/hovsr.PNG" width="60%" >
+	<img src="https://raw.githubusercontent.com/ppizarror/HOVSR/master/.github/images/hovsr.PNG" width="60%" >
 </p>
 
 ## License
